@@ -1,1 +1,190 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+// ── Palette primaire : bleu ANAGRASC ──────────────────────────── //
+$anagrasc-primary-palette: (
+   50  : #e2e8ed,
+   100 : #b6c6d2,
+   200 : #86a0b4,
+   300 : #567996,
+   400 : #315d7f,
+   500 : #0d2d4a,  // couleur principale
+   600 : #0b2843,
+   700 : #09223a,
+   800 : #071c32,
+   900 : #031122,
+   A100: #5b9fff,
+   A200: #2880ff,
+   A400: #0061f4,
+   A700: #0057da,
+   contrast: (
+     50  : rgba(0,0,0,.87),
+     100 : rgba(0,0,0,.87),
+     200 : rgba(0,0,0,.87),
+     300 : #fff,
+     400 : #fff,
+     500 : #fff,
+     600 : #fff,
+     700 : #fff,
+     800 : #fff,
+     900 : #fff,
+     A100: rgba(0,0,0,.87),
+     A200: #fff,
+     A400: #fff,
+     A700: #fff,
+   )
+);
+
+// ── Palette accent : or ANAGRASC ─────────────────────────────── //
+$anagrasc-accent-palette: (
+   50  : #fdf6e3,
+   100 : #f9e8b9,
+   200 : #f5d98b,
+   300 : #f0c95c,
+   400 : #ecbd39,
+   500 : #c8960c,  // couleur accent principale
+   600 : #b5870b,
+   700 : #9e7409,
+   800 : #876207,
+   900 : #634804,
+   A100: #fff8e1,
+   A200: #ffe082,
+   A400: #ffd740,
+   A700: #ffc400,
+   contrast: (
+     50  : rgba(0,0,0,.87),
+     100 : rgba(0,0,0,.87),
+     200 : rgba(0,0,0,.87),
+     300 : rgba(0,0,0,.87),
+     400 : rgba(0,0,0,.87),
+     500 : rgba(0,0,0,.87),
+     600 : rgba(0,0,0,.87),
+     700 : rgba(0,0,0,.87),
+     800 : #fff,
+     900 : #fff,
+     A100: rgba(0,0,0,.87),
+     A200: rgba(0,0,0,.87),
+     A400: rgba(0,0,0,.87),
+     A700: rgba(0,0,0,.87),
+   )
+);
+
+// ── Définir le thème Material ANAGRASC ───────────────────────── //
+$anagrasc-primary : mat.define-palette($anagrasc-primary-palette, 500);
+$anagrasc-accent  : mat.define-palette($anagrasc-accent-palette, 500);
+$anagrasc-warn    : mat.define-palette(mat.$red-palette);
+
+$anagrasc-theme: mat.define-light-theme((
+   color: (
+     primary : $anagrasc-primary,
+     accent   : $anagrasc-accent,
+     warn     : $anagrasc-warn,
+   ),
+   typography: mat.define-typography-config(
+     $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+   ),
+   density: 0,
+));
+
+// Appliquer le thème à tous les composants Material
+@include mat.all-component-themes($anagrasc-theme);
+
+// ── Variables SCSS globales ───────────────────────────────────── //
+:root {
+   --primary   : #0d2d4a;
+   --primary-light : #1a4a6e;
+   --accent    : #c8960c;
+   --accent-dark : #412402;
+   --surface   : #f5f7fa;
+   --card-bg   : #ffffff;
+   --text-main : #1a1a2e;
+   --text-muted: #6b7280;
+   --success   : #2e7d32;
+   --danger    : #c62828;
+   --warning   : #f57f17;
+   --radius    : 8px;
+   --shadow    : 0 2px 8px rgba(0,0,0,.08);
+}
+
+// ── Styles globaux ────────────────────────────────────────────── //
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+   font-family: 'Roboto', sans-serif;
+   background: var(--surface);
+   color: var(--text-main);
+}
+
+// ── Utilitaires SCSS ──────────────────────────────────────────── //
+.page-container {
+   max-width: 1200px;
+   margin: 0 auto;
+   padding: 24px 16px;
+}
+
+.ana-card {
+   background: var(--card-bg);
+   border-radius: var(--radius);
+   box-shadow: var(--shadow);
+   padding: 20px;
+}
+
+.ana-badge {
+   display: inline-flex;
+   align-items: center;
+   padding: 2px 10px;
+   border-radius: 20px;
+   font-size: 12px;
+   font-weight: 500;
+
+   &--live    { background: #e8f5e9; color: #2e7d32; }
+   &--soon    { background: #fff8e1; color: #f57f17; }
+   &--done    { background: #f5f5f5; color: #616161; }
+   &--waiting { background: #e3f2fd; color: #1565c0; }
+   &--danger  { background: #ffebee; color: #c62828; }
+}
+
+.mat-mdc-raised-button.ana-btn-primary {
+   background-color: var(--primary) !important;
+   color: #fff !important;
+}
+
+.mat-mdc-raised-button.ana-btn-accent {
+   background-color: var(--accent) !important;
+   color: var(--accent-dark) !important;
+}
+
+// ── Surcharge de la toolbar Material ─────────────────────────── //
+.ana-toolbar {
+   background: var(--primary) !important;
+   color: #fff !important;
+
+   .mat-mdc-button { color: rgba(255,255,255,.8) !important; }
+   .mat-mdc-button.active { color: #fff !important; font-weight: 500; }
+}
+
+// ── Surcharge des cartes Material ────────────────────────────── //
+mat-card.ana-mat-card {
+   border-radius: var(--radius) !important;
+   box-shadow: var(--shadow) !important;
+}
+
+// ── Surcharge des inputs Material ────────────────────────────── //
+.mat-mdc-form-field {
+   width: 100%;
+}
+
+// ── Timer SCSS ────────────────────────────────────────────────── //
+.ana-timer {
+   font-size: 2.5rem;
+   font-weight: 700;
+   font-variant-numeric: tabular-nums;
+   color: var(--accent);
+   letter-spacing: 2px;
+
+   &--urgent { color: var(--danger); animation: pulse 1s infinite; }
+
+   @keyframes pulse {
+     0%, 100% { opacity: 1; }
+     50%  { opacity: .5; }
+   }
+}

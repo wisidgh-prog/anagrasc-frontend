@@ -1,0 +1,44 @@
+.connexion-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  padding: 24px;
+}
+
+.connexion-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: var(--radius) !important;
+  overflow: hidden;
+}
+
+.connexion-header {
+  background: var(--primary);
+  color: #fff;
+  text-align: center;
+  padding: 28px 20px;
+
+  .header-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  h2 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+  p  { font-size: 13px; opacity: .75; }
+}
+
+mat-card-content {
+  padding: 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-full { width: 100%; height: 44px; font-size: 15px; }
+.divider  { margin: 8px 0; }
+.lien-inscription { text-align: center; font-size: 13px; }

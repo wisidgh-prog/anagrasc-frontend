@@ -1,0 +1,89 @@
+<mat-toolbar class="ana-toolbar">
+
+  <!-- Logo -->
+  <a routerLink="/" class="logo-link">
+    <span class="logo-name">ANAGRASC</span>
+    <span class="logo-sub">Enchères judiciaires</span>
+  </a>
+
+  <span class="spacer"></span>
+
+  <!-- Liens publics -->
+  <button mat-button routerLink="/catalogue"
+          routerLinkActive="active">
+    <mat-icon>gavel</mat-icon> Enchères
+  </button>
+  <button mat-button routerLink="/ventes-passees"
+          routerLinkActive="active">
+    Historique
+  </button>
+
+  <!-- Liens enchérisseur -->
+  <ng-container *ngIf="role === 'encherisseur'">
+    <button mat-button routerLink="/mon-espace" routerLinkActive="active">
+      <mat-icon>person</mat-icon> Mon espace
+    </button>
+    <button mat-button routerLink="/mon-espace/wallet" routerLinkActive="active">
+      <mat-icon>account_balance_wallet</mat-icon> Wallet
+    </button>
+  </ng-container>
+
+  <!-- Liens commissaire -->
+  <ng-container *ngIf="role === 'commissaire_priseur'">
+    <button mat-button routerLink="/commissaire" routerLinkActive="active">
+      Dashboard
+    </button>
+    <button mat-button routerLink="/commissaire/biens" routerLinkActive="active">
+      Biens
+    </button>
+    <button mat-button routerLink="/commissaire/sessions" routerLinkActive="active">
+      Sessions
+    </button>
+    <button mat-button routerLink="/commissaire/incidents"
+            routerLinkActive="active">
+      <mat-icon>warning</mat-icon> Incidents
+    </button>
+  </ng-container>
+
+  <!-- Liens superviseur -->
+  <ng-container *ngIf="role === 'superviseur'">
+    <button mat-button routerLink="/superviseur" routerLinkActive="active">
+      Mes sessions
+    </button>
+  </ng-container>
+
+  <!-- Liens admin -->
+  <ng-container *ngIf="role === 'administrateur'">
+    <button mat-button routerLink="/admin" routerLinkActive="active">
+      Dashboard
+    </button>
+    <button mat-button routerLink="/admin/utilisateurs" routerLinkActive="active">
+      Utilisateurs
+    </button>
+  </ng-container>
+
+  <!-- Boutons droite -->
+  <ng-container *ngIf="estConnecte; else nonConnecte">
+
+    <!-- Menu utilisateur -->
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
+      {{ utilisateur?.nom_complet }}
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="deconnecter()">
+        <mat-icon>logout</mat-icon> Déconnexion
+      </button>
+    </mat-menu>
+  </ng-container>
+
+  <ng-template #nonConnecte>
+    <button mat-button routerLink="/connexion">Connexion</button>
+    <button mat-raised-button class="ana-btn-accent"
+            routerLink="/inscription">
+      S'inscrire
+    </button>
+  </ng-template>
+
+</mat-toolbar>

@@ -1,0 +1,116 @@
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-content">
+    <h1>Ventes aux enchères judiciaires</h1>
+    <p>Biens saisis ou confisqués — ANAGRASC Burkina Faso</p>
+  </div>
+</div>
+
+<div class="page-container">
+  <div class="layout-catalogue">
+
+    <!-- Filtres -->
+    <aside class="filtres-panel">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Filtres</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Rechercher</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput [(ngModel)]="filtres.search"
+                   (input)="chargerBiens()">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Catégorie</mat-label>
+            <mat-select [(ngModel)]="filtres.categorie_id"
+                        (selectionChange)="chargerBiens()">
+              <mat-option value="">Toutes</mat-option>
+              <mat-option *ngFor="let c of categories" [value]="c.id">
+                {{ c.libelle }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Statut</mat-label>
+            <mat-select [(ngModel)]="filtres.statut"
+                        (selectionChange)="chargerBiens()">
+              <mat-option value="">Tous</mat-option>
+              <mat-option value="en_cours">En cours</mat-option>
+              <mat-option value="publie">À venir</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button mat-stroked-button (click)="reinitialiser()"
+                  style="width:100%">
+            Effacer les filtres
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </aside>
+
+    <!-- Liste biens -->
+    <main class="biens-main">
+
+      <!-- Chargement -->
+      <div *ngIf="chargement" class="center-spinner">
+        <mat-spinner diameter="48" color="primary"></mat-spinner>
+      </div>
+
+      <!-- Aucun résultat -->
+      <div *ngIf="!chargement && biens.length === 0" class="empty">
+        <mat-icon>search_off</mat-icon>
+        <p>Aucun bien pour ces filtres.</p>
+      </div>
+
+      <!-- Grille -->
+      <div *ngIf="!chargement" class="biens-grid">
+        <mat-card *ngFor="let b of biens" class="bien-card">
+
+          <!-- Photo -->
+          <img mat-card-image
+               *ngIf="b.photos?.length"
+               [src]="'http://localhost:8000/storage/' + b.photos[0].url"
+               [alt]="b.titre">
+          <div *ngIf="!b.photos?.length" class="no-photo">
+            <mat-icon>image</mat-icon>
+          </div>
+
+          <mat-card-content>
+            <!-- Badge statut -->
+            <span class="ana-badge"
+                  [class.ana-badge--live]="b.statut === 'en_cours'"
+                  [class.ana-badge--soon]="b.statut === 'publie'">
+              {{ b.statut === 'en_cours' ? 'En cours' : 'À venir' }}
+            </span>
+            <h3 class="bien-titre">{{ b.titre }}</h3>
+            <p class="bien-info">
+              <mat-icon>category</mat-icon> {{ b.categorie?.libelle }}
+            </p>
+            <p class="bien-info">
+              <mat-icon>location_on</mat-icon> {{ b.lieu_retrait }}
+            </p>
+            <p class="bien-prix">{{ formatFCFA(b.mise_a_prix) }}</p>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <a *ngIf="b.statut === 'en_cours'"
+               mat-raised-button class="ana-btn-primary"
+               [routerLink]="['/encheres', b.sessions?.[0]?.id, 'live']">
+              <mat-icon>gavel</mat-icon> Enchérir
+            </a>
+            <a *ngIf="b.statut !== 'en_cours'"
+               mat-stroked-button
+               [routerLink]="['/biens', b.id]">
+              Voir les détails
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </main>
+  </div>
+</div>

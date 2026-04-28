@@ -1,0 +1,56 @@
+.hero {
+  background: var(--primary);
+  padding: 40px 24px;
+
+  .hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    h1 { color: #fff; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    p  { color: rgba(255,255,255,.7); font-size: 15px; }
+  }
+}
+
+.layout-catalogue {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.filtres-panel {
+  position: sticky;
+  top: 80px;
+  mat-card { padding: 4px; }
+  mat-card-content { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+}
+
+.biens-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.bien-card {
+  border-radius: var(--radius) !important;
+  transition: box-shadow .2s;
+  &:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12) !important; }
+
+  img[mat-card-image] { height: 160px; object-fit: cover; }
+  .no-photo {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    mat-icon { font-size: 40px; color: #bdbdbd; }
+  }
+}
+
+.bien-titre { font-size: 15px; font-weight: 600; margin: 8px 0 4px; color: var(--primary); }
+.bien-info  { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); margin-bottom: 2px;
+              mat-icon { font-size: 14px; width: 14px; height: 14px; } }
+.bien-prix  { font-size: 16px; font-weight: 700; color: var(--primary); margin-top: 8px; }
+
+.center-spinner { display: flex; justify-content: center; padding: 60px; }
+.empty { text-align: center; padding: 60px; color: var(--text-muted);
+         mat-icon { font-size: 48px; display: block; margin-bottom: 8px; } }
