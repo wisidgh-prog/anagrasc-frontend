@@ -1,0 +1,15 @@
+.page-container { max-width:1300px; margin:0 auto; padding:24px 16px; }
+.page-header { margin-bottom:20px; h2 { font-weight:600; color:var(--primary); } }
+
+.filtres-card { margin-bottom:16px; }
+.filtres-row { display:grid; grid-template-columns:1fr 1fr 2fr; gap:12px; }
+
+.table-card {
+  border-radius: var(--radius) !important;
+  table { border-radius:0; }
+}
+
+.p-0   { padding:0!important; }
+.w-full{ width:100%; }
+
+tr.mat-mdc-row:hover { background: #f5f7ff; }

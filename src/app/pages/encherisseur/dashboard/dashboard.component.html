@@ -1,1 +1,72 @@
-<p>dashboard works!</p>
+<div class="page-container">
+  <h2 class="page-title">
+    Bonjour, {{ utilisateur?.nom_complet }}
+    <span class="bienvenue-icon">👋</span>
+  </h2>
+
+  <!-- Statistiques wallet -->
+  <div class="stats-grid" *ngIf="wallet">
+    <mat-card class="stat-card stat-card--primary">
+      <mat-card-content>
+        <mat-icon>account_balance_wallet</mat-icon>
+        <div class="stat-val">{{ formatFCFA(wallet.solde) }}</div>
+        <div class="stat-lbl">Solde wallet</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <mat-icon>bar_chart</mat-icon>
+        <div class="stat-val">{{ wallet.nb_participations }}</div>
+        <div class="stat-lbl">Participations</div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <mat-icon>warning_amber</mat-icon>
+        <div class="stat-val" [style.color]="wallet.nb_defaillances > 0 ? 'var(--danger)' : 'inherit'">
+          {{ wallet.nb_defaillances }}
+        </div>
+        <div class="stat-lbl">Défaillances</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Actions rapides -->
+  <div class="actions-rapides">
+    <a mat-raised-button class="ana-btn-accent" routerLink="/mon-espace/wallet">
+      <mat-icon>add</mat-icon> Recharger mon wallet
+    </a>
+    <a mat-stroked-button routerLink="/catalogue">
+      <mat-icon>gavel</mat-icon> Voir les enchères
+    </a>
+    <a mat-stroked-button routerLink="/mon-espace/participations">
+      <mat-icon>history</mat-icon> Mon historique
+    </a>
+  </div>
+
+  <!-- Mes enchères en cours -->
+  <h3 class="section-titre">Mes enchères en cours</h3>
+  <p *ngIf="offresEnCours.length === 0" class="empty-msg">
+    Vous ne participez à aucune enchère active.
+  </p>
+  <div class="offres-grid">
+    <mat-card *ngFor="let o of offresEnCours" class="offre-card">
+      <mat-card-content>
+        <div class="offre-bien">{{ o.bien }}</div>
+        <div class="offre-id">
+          <mat-chip>{{ o.id_anonyme }}</mat-chip>
+        </div>
+        <div class="offre-montant">{{ formatFCFA(o.montant) }}</div>
+        <div class="offre-timer ana-timer ana-timer--sm"
+             [class.ana-timer--urgent]="o.secondes_restantes < 60">
+          ⏱ {{ formatTimer(o.secondes_restantes) }}
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-stroked-button [routerLink]="['/encheres', o.session_id, 'live']">
+          Suivre l'enchère →
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

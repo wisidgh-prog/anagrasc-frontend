@@ -1,0 +1,15 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.breadcrumb {
+  background: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+
+  a { color: var(--primary); text-decoration: none; }
+  .active { color: var(--text-muted); }
+}

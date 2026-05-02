@@ -188,3 +188,45 @@ mat-card.ana-mat-card {
      50%  { opacity: .5; }
    }
 }
+
+// ── Correction CDK Overlay (mat-select, mat-menu, mat-dialog) ─── //
+
+.cdk-overlay-container {
+  z-index: 9999 !important;
+  position: fixed !important;
+}
+
+.cdk-overlay-pane {
+  z-index: 9999 !important;
+}
+
+.mat-mdc-select-panel {
+  background: #fff !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .15) !important;
+  z-index: 9999 !important;
+}
+
+.mat-mdc-option {
+  font-size: 14px;
+  color: var(--text-main);
+
+  &:hover:not(.mdc-list-item--disabled) {
+    background: rgba(13, 45, 74, .06) !important;
+  }
+
+  &.mdc-list-item--selected {
+    background: rgba(13, 45, 74, .1) !important;
+    color: var(--primary) !important;
+    font-weight: 500;
+  }
+}
+
+.snack-success .mdc-snackbar__surface {
+  background: #2e7d32 !important;
+  color: #fff !important;
+}
+.snack-error .mdc-snackbar__surface {
+  background: #c62828 !important;
+  color: #fff !important;
+}

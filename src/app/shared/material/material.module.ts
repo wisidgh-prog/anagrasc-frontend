@@ -21,6 +21,9 @@ import { MatListModule }       from '@angular/material/list';
 import { MatStepperModule }    from '@angular/material/stepper';
 import { MatTooltipModule }    from '@angular/material/tooltip';
 import { MatSortModule }       from '@angular/material/sort';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 const MATERIAL_MODULES = [
   MatToolbarModule, MatButtonModule, MatIconModule, MatCardModule,
@@ -28,7 +31,7 @@ const MATERIAL_MODULES = [
   MatPaginatorModule, MatProgressSpinnerModule, MatSnackBarModule,
   MatDialogModule, MatChipsModule, MatProgressBarModule, MatBadgeModule,
   MatMenuModule, MatDividerModule, MatListModule, MatStepperModule,
-  MatTooltipModule, MatSortModule,
+  MatTooltipModule, MatSortModule, MatDatepickerModule, MatNativeDateModule
 ];
 
 @NgModule({

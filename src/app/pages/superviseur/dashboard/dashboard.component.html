@@ -1,1 +1,42 @@
-<p>dashboard works!</p>
+<div class="page-container">
+  <h2 class="page-title">Mes sessions</h2>
+
+  <!-- Chargement -->
+  <div *ngIf="chargement" class="center-spinner">
+    <mat-spinner diameter="48" color="primary"></mat-spinner>
+  </div>
+
+  <!-- Aucune session -->
+  <div *ngIf="!chargement && sessions.length === 0" class="empty">
+    <mat-icon>assignment</mat-icon>
+    <p>Aucune session ne vous est affectée pour le moment.</p>
+  </div>
+
+  <!-- Liste des sessions -->
+  <div class="sessions-grid" *ngIf="!chargement && sessions.length > 0">
+    <mat-card *ngFor="let s of sessions" class="session-card">
+      <mat-card-header>
+        <mat-card-title>{{ s.bien?.titre }}</mat-card-title>
+        <mat-card-subtitle>
+          <span class="ana-badge"
+                [class.ana-badge--live]="s.statut==='en_cours'"
+                [class.ana-badge--soon]="s.statut==='a_venir'"
+                [class.ana-badge--done]="s.statut==='terminee'">
+            {{ s.statut }}
+          </span>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Mise à prix :</strong> {{ formatFCFA(s.mise_a_prix_effective) }}</p>
+        <p><strong>Début :</strong> {{ s.date_debut | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Fin :</strong> {{ s.date_fin | date:'dd/MM/yyyy HH:mm' }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <a mat-raised-button class="ana-btn-primary"
+           [routerLink]="['/superviseur/session', s.id]">
+          <mat-icon>visibility</mat-icon> Superviser
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

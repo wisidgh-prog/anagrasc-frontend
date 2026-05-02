@@ -1,1 +1,68 @@
-<p>participations works!</p>
+<div class="page-container">
+  <h2 class="page-title">Mes participations</h2>
+
+  <!-- Chargement -->
+  <div *ngIf="chargement" class="center-spinner">
+    <mat-spinner diameter="48" color="primary"></mat-spinner>
+  </div>
+
+  <!-- Aucune participation -->
+  <div *ngIf="!chargement && participations.length === 0" class="empty">
+    <mat-icon>history</mat-icon>
+    <p>Vous n'avez encore participé à aucune enchère.</p>
+  </div>
+
+  <!-- Tableau des participations -->
+  <mat-card *ngIf="!chargement && participations.length > 0" class="table-card">
+    <mat-card-content class="p-0">
+      <table mat-table [dataSource]="participations" class="w-full">
+
+        <!-- Colonne Bien -->
+        <ng-container matColumnDef="bien">
+          <th mat-header-cell *matHeaderCellDef>Bien</th>
+          <td mat-cell *matCellDef="let p" class="fw-semibold">{{ p.bien }}</td>
+        </ng-container>
+
+        <!-- Colonne Statut -->
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let p">
+            <span class="ana-badge"
+                  [class.ana-badge--live]="p.statut === 'terminee'"
+                  [class.ana-badge--done]="p.statut === 'a_venir' || p.statut === 'en_cours'">
+              {{ p.statut === 'terminee' ? 'Terminée' : 'En cours' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Colonne Ma meilleure offre -->
+        <ng-container matColumnDef="ma_meilleure">
+          <th mat-header-cell *matHeaderCellDef>Mon offre max</th>
+          <td mat-cell *matCellDef="let p" class="montant-cell">
+            {{ formatFCFA(p.ma_meilleure ?? 0) }}
+          </td>
+        </ng-container>
+
+        <!-- Colonne Gagnant -->
+        <ng-container matColumnDef="gagnant">
+          <th mat-header-cell *matHeaderCellDef>Gagnant</th>
+          <td mat-cell *matCellDef="let p">
+            <mat-chip *ngIf="p.gagnant">{{ p.gagnant }}</mat-chip>
+            <span *ngIf="!p.gagnant" class="muted">—</span>
+          </td>
+        </ng-container>
+
+        <!-- Colonne Date de fin -->
+        <ng-container matColumnDef="date_fin">
+          <th mat-header-cell *matHeaderCellDef>Clôture</th>
+          <td mat-cell *matCellDef="let p" class="muted">
+            {{ p.date_fin | date:'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['bien','statut','ma_meilleure','gagnant','date_fin']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['bien','statut','ma_meilleure','gagnant','date_fin'];"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

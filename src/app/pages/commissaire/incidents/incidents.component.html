@@ -1,1 +1,101 @@
-<p>incidents works!</p>
+<div class="page-container">
+  <h4 class="fw-bold mb-4">Incidents signalés</h4>
+
+  <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+  <div *ngIf="erreur" class="alert alert-danger">{{ erreur }}</div>
+
+  <!-- Formulaire de décision -->
+  <mat-card *ngIf="incidentOuvert" class="decision-card">
+    <mat-card-header>
+      <mat-card-title class="decision-title">
+        <mat-icon color="warn">gavel</mat-icon>
+        Prendre une décision — Incident #{{ incidentOuvert.id }}
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="details-incident">
+        <div><strong>Session :</strong> {{ incidentOuvert.session?.bien?.titre }}</div>
+        <div><strong>Type :</strong> {{ libelleType(incidentOuvert.type_incident) }}</div>
+        <div><strong>ID concerné :</strong> {{ incidentOuvert.id_concerne ?? 'N/A' }}</div>
+        <div><strong>Description :</strong> {{ incidentOuvert.description }}</div>
+        <div><strong>Signalé le :</strong> {{ incidentOuvert.date_signalement | date:'dd/MM/yyyy HH:mm' }}</div>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Décision *</mat-label>
+        <mat-select [(ngModel)]="decision.decision">
+          <mat-option value="maintien">Option A – Maintien (incident non fondé)</mat-option>
+          <mat-option value="annulation">Option B – Annulation de la session</mat-option>
+          <mat-option value="reprogrammation">Option C – Annulation + reprogrammation</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Note de décision</mat-label>
+        <textarea matInput rows="3" [(ngModel)]="decision.note_decision" placeholder="Justification…"></textarea>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="annuler()">Annuler</button>
+      <button mat-raised-button color="warn" (click)="prendreDecision()">Confirmer la décision</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Tableau des incidents -->
+  <mat-card class="table-card">
+    <mat-card-content class="p-0">
+      <div *ngIf="chargement" class="center-spinner">
+        <mat-spinner diameter="48" color="primary"></mat-spinner>
+      </div>
+      <table *ngIf="!chargement" mat-table [dataSource]="incidents" class="w-full">
+        <ng-container matColumnDef="session">
+          <th mat-header-cell *matHeaderCellDef>Session</th>
+          <td mat-cell *matCellDef="let i" class="fw-semibold">{{ i.session?.bien?.titre }}</td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let i">{{ libelleType(i.type_incident) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="id_concerne">
+          <th mat-header-cell *matHeaderCellDef>ID concerné</th>
+          <td mat-cell *matCellDef="let i">
+            <mat-chip *ngIf="i.id_concerne" class="ana-badge ana-badge--soon">{{ i.id_concerne }}</mat-chip>
+            <span *ngIf="!i.id_concerne">—</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="superviseur">
+          <th mat-header-cell *matHeaderCellDef>Superviseur</th>
+          <td mat-cell *matCellDef="let i">{{ i.superviseur?.prenom }} {{ i.superviseur?.nom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let i">{{ i.date_signalement | date:'dd/MM/yy HH:mm' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let i">
+            <span class="ana-badge"
+                  [class.ana-badge--danger]="i.statut==='ouvert'"
+                  [class.ana-badge--soon]="i.statut==='traite'"
+                  [class.ana-badge--done]="i.statut==='clos'">
+              {{ i.statut === 'ouvert' ? 'Ouvert' : i.statut === 'traite' ? 'Traité' : 'Clos' }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let i">
+            <button *ngIf="i.statut==='ouvert'" mat-raised-button color="warn" (click)="ouvrirDecision(i)">
+              Décider
+            </button>
+            <span *ngIf="i.statut!=='ouvert'" class="muted small">{{ i.decision }}</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['session','type','id_concerne','superviseur','date','statut','actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['session','type','id_concerne','superviseur','date','statut','actions'];"></tr>
+      </table>
+      <div *ngIf="!chargement && incidents.length === 0" class="empty">Aucun incident pour l'instant.</div>
+    </mat-card-content>
+  </mat-card>
+</div>

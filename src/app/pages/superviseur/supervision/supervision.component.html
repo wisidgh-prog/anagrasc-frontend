@@ -1,1 +1,106 @@
-<p>supervision works!</p>
+<div class="page-container" *ngIf="data">
+  <!-- Bannière mode supervision -->
+  <div class="supervision-banner">
+    <div class="banner-info">
+      <mat-icon>visibility</mat-icon>
+      <span>Mode supervision — {{ data.bien.titre }}</span>
+    </div>
+    <button mat-raised-button color="warn" (click)="afficherFormIncident = true">
+      <mat-icon>report_problem</mat-icon> Signaler un incident
+    </button>
+  </div>
+
+  <div class="supervision-layout">
+    <!-- Colonne gauche -->
+    <div>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Offres en temps réel</mat-card-title>
+          <mat-card-subtitle>{{ data.participants.length }} participant(s)</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <table mat-table [dataSource]="data.historique_offres" class="w-full">
+            <ng-container matColumnDef="id_anonyme">
+              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <td mat-cell *matCellDef="let o"><strong>{{ o.id_anonyme }}</strong></td>
+            </ng-container>
+            <ng-container matColumnDef="montant">
+              <th mat-header-cell *matHeaderCellDef>Montant</th>
+              <td mat-cell *matCellDef="let o" class="montant-cell">{{ formatFCFA(o.montant) }}</td>
+            </ng-container>
+            <ng-container matColumnDef="heure">
+              <th mat-header-cell *matHeaderCellDef>Heure</th>
+              <td mat-cell *matCellDef="let o">{{ o.heure }}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="colonnesOffres"></tr>
+            <tr mat-row *matRowDef="let r; columns: colonnesOffres;"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Colonne droite -->
+    <div class="right-col">
+      <!-- Timer -->
+      <mat-card class="timer-card">
+        <mat-card-content>
+          <p class="timer-lbl">Temps restant</p>
+          <div class="ana-timer" [class.ana-timer--urgent]="(data.secondes_restantes ?? 0) < 60">{{ timerFormate }}</div>
+          <p class="timer-lbl" style="margin-top:8px;">
+            Meilleure offre : <strong>{{ formatFCFA(data.meilleure_offre ?? 0) }}</strong>
+          </p>
+          <p class="timer-lbl small">par {{ data.id_meilleur }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Participants -->
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Participants</mat-card-title>
+        </mat-card-header>
+        <mat-list>
+          <mat-list-item *ngFor="let p of data.participants">
+            <mat-icon matListItemIcon>person</mat-icon>
+            <div matListItemTitle>{{ p.id_anonyme }}</div>
+            <div matListItemLine class="montant-cell">{{ formatFCFA(p.meilleure_offre) }}</div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+
+      <!-- Formulaire incident -->
+      <mat-card *ngIf="afficherFormIncident" class="incident-card">
+        <mat-card-header>
+          <mat-card-title class="incident-title">
+            <mat-icon color="warn">report_problem</mat-icon> Signaler un incident
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Type d'incident</mat-label>
+            <mat-select [(ngModel)]="incident.type_incident">
+              <mat-option value="offre_litigieuse">Offre litigieuse</mat-option>
+              <mat-option value="probleme_technique">Problème technique</mat-option>
+              <mat-option value="fraude_suspecte">Fraude suspecte</mat-option>
+              <mat-option value="autre">Autre</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>ID anonyme concerné</mat-label>
+            <input matInput [(ngModel)]="incident.id_concerne" placeholder="ENCH-099">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Description *</mat-label>
+            <textarea matInput [(ngModel)]="incident.description" rows="3" placeholder="Décrivez le problème..."></textarea>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button (click)="afficherFormIncident = false">Annuler</button>
+          <button mat-raised-button color="warn" (click)="signalerIncident()" [disabled]="chargement">
+            <mat-spinner *ngIf="chargement" diameter="18"></mat-spinner>
+            <span *ngIf="!chargement">Envoyer au commissaire</span>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -98,3 +98,16 @@
   h3  { font-size: 20px; margin: 12px 0 8px; }
   p   { color: var(--text-muted); margin-bottom: 20px; }
 }
+
+// Correction : stepper Material et overlay
+::ng-deep .mat-step-content {
+  overflow: visible !important;
+}
+
+::ng-deep .mat-horizontal-stepper-content {
+  overflow: visible !important;
+}
+
+.inscription-card {
+  overflow: visible !important;
+}

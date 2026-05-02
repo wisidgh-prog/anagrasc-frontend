@@ -1,1 +1,144 @@
-<p>biens works!</p>
+<div class="page-container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold mb-0">Gestion des biens</h4>
+    <button mat-raised-button class="ana-btn-primary" (click)="ouvrirAjout()">
+      + Nouveau bien
+    </button>
+  </div>
+
+  <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+  <div *ngIf="erreur" class="alert alert-danger">{{ erreur }}</div>
+
+  <!-- Filtre statut -->
+  <div class="mb-3 d-flex gap-2 flex-wrap">
+    <mat-form-field appearance="outline" style="width:auto;">
+      <mat-label>Filtrer par statut</mat-label>
+      <mat-select [(ngModel)]="filtreStatut" (selectionChange)="charger()">
+        <mat-option value="">Tous les statuts</mat-option>
+        <mat-option value="publie">Publié</mat-option>
+        <mat-option value="en_cours">En cours</mat-option>
+        <mat-option value="vendu">Vendu</mat-option>
+        <mat-option value="annule">Annulé</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Formulaire ajout / modification -->
+  <mat-card *ngIf="modeFormulaire" class="form-card">
+    <mat-card-header>
+      <mat-card-title>{{ modeFormulaire === 'ajout' ? 'Ajouter un bien' : 'Modifier le bien' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Titre *</mat-label>
+            <input matInput [(ngModel)]="form.titre" placeholder="Ex: Toyota Land Cruiser 2020">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Catégorie *</mat-label>
+            <mat-select [(ngModel)]="form.categorie_id">
+              <mat-option value="">Sélectionner…</mat-option>
+              <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.libelle }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Description *</mat-label>
+            <textarea matInput rows="3" [(ngModel)]="form.description" placeholder="État, caractéristiques…"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Mise à prix (FCFA) *</mat-label>
+            <input matInput type="number" [(ngModel)]="form.mise_a_prix">
+          </mat-form-field>
+        </div>
+        <div class="col-md-8">
+          <mat-form-field appearance="outline">
+            <mat-label>Lieu de retrait *</mat-label>
+            <input matInput [(ngModel)]="form.lieu_retrait" placeholder="ex: Abattoir de Kossodo">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Horaires de visite</mat-label>
+            <input matInput [(ngModel)]="form.horaires_visite" placeholder="Lun-Ven 08h-17h">
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Remarques</mat-label>
+            <input matInput [(ngModel)]="form.remarques">
+          </mat-form-field>
+        </div>
+        <div class="col-12" *ngIf="modeFormulaire === 'ajout'">
+          <label class="form-label">Photos (JPG, PNG - max 5)</label>
+          <input type="file" accept=".jpg,.jpeg,.png" multiple (change)="onPhotos($event)">
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-button (click)="annuler()">Annuler</button>
+      <button mat-raised-button class="ana-btn-primary" (click)="soumettre()">Enregistrer</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <!-- Tableau des biens -->
+  <mat-card class="table-card">
+    <mat-card-content class="p-0">
+      <div *ngIf="chargement" class="center-spinner">
+        <mat-spinner diameter="48" color="primary"></mat-spinner>
+      </div>
+      <table *ngIf="!chargement" mat-table [dataSource]="biens" class="w-full">
+        <ng-container matColumnDef="titre">
+          <th mat-header-cell *matHeaderCellDef>Titre</th>
+          <td mat-cell *matCellDef="let b" class="fw-semibold">{{ b.titre }}</td>
+        </ng-container>
+        <ng-container matColumnDef="categorie">
+          <th mat-header-cell *matHeaderCellDef>Catégorie</th>
+          <td mat-cell *matCellDef="let b">{{ b.categorie?.libelle }}</td>
+        </ng-container>
+        <ng-container matColumnDef="mise_a_prix">
+          <th mat-header-cell *matHeaderCellDef>Mise à prix</th>
+          <td mat-cell *matCellDef="let b">{{ formatFCFA(b.mise_a_prix) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="lieu">
+          <th mat-header-cell *matHeaderCellDef>Lieu</th>
+          <td mat-cell *matCellDef="let b">{{ b.lieu_retrait }}</td>
+        </ng-container>
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let b">
+            <span class="ana-badge"
+                  [class.ana-badge--live]="b.statut==='en_cours'"
+                  [class.ana-badge--soon]="b.statut==='publie'"
+                  [class.ana-badge--done]="b.statut==='vendu'"
+                  [class.ana-badge--danger]="b.statut==='annule'">
+              {{ libelleStatut(b.statut) }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let b">
+            <button *ngIf="b.statut==='publie'" mat-icon-button color="primary" (click)="ouvrirModification(b)" matTooltip="Modifier">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button *ngIf="b.statut==='publie'" mat-icon-button color="warn" (click)="supprimer(b.id)" matTooltip="Supprimer">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <span *ngIf="b.statut!=='publie'" class="muted">—</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['titre','categorie','mise_a_prix','lieu','statut','actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['titre','categorie','mise_a_prix','lieu','statut','actions'];"></tr>
+      </table>
+      <div *ngIf="!chargement && biens.length === 0" class="empty">Aucun bien trouvé.</div>
+    </mat-card-content>
+  </mat-card>
+</div>

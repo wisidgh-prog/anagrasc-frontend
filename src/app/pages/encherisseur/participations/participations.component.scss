@@ -1,0 +1,36 @@
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.center-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px;
+  color: var(--text-muted);
+  mat-icon { font-size: 48px; display: block; margin-bottom: 8px; }
+  p { font-size: 14px; }
+}
+
+.table-card {
+  border-radius: var(--radius) !important;
+}
+
+.p-0 { padding: 0 !important; }
+.w-full { width: 100%; }
+.fw-semibold { font-weight: 600; }
+.montant-cell { font-weight: 600; color: var(--primary); }
+.muted { color: var(--text-muted); font-size: 13px; }

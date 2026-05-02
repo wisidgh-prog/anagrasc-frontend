@@ -1,0 +1,32 @@
+.page-container { max-width:1300px; margin:0 auto; padding:24px 16px; }
+
+.decision-card {
+  margin-bottom:24px;
+  border: 2px solid var(--danger);
+  border-radius: var(--radius)!important;
+}
+
+.decision-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--danger);
+}
+
+.details-incident {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding:16px;
+  margin-bottom:16px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.table-card { border-radius: var(--radius)!important; }
+.p-0 { padding:0!important; }
+.w-full { width:100%; }
+.fw-semibold { font-weight:600; }
+.center-spinner { display:flex; justify-content:center; padding:40px; }
+.empty { text-align:center; padding:30px; color:var(--text-muted); }
+.muted { color:var(--text-muted); font-size:13px; }
+.small { font-size:12px; }

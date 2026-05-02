@@ -1,0 +1,34 @@
+.page-container { max-width:1200px; margin:0 auto; padding:24px 16px; }
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.center-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 60px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px;
+  color: var(--text-muted);
+  mat-icon { font-size: 48px; display: block; margin-bottom: 8px; }
+  p { font-size: 14px; }
+}
+
+.sessions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.session-card {
+  border-radius: var(--radius) !important;
+  mat-card-header { margin-bottom: 8px; }
+  mat-card-content p { margin-bottom: 4px; font-size: 14px; }
+}

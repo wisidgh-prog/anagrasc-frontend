@@ -1,1 +1,110 @@
-<p>ventes-passees works!</p>
+<div class="page-container">
+
+  <!-- En-tête -->
+  <div class="page-header">
+    <h2>Historique des ventes</h2>
+    <p class="subtitle">Enchères judiciaires clôturées — ANAGRASC</p>
+  </div>
+
+  <!-- Filtres -->
+  <mat-card class="filtres-card">
+    <mat-card-content>
+      <div class="filtres-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Catégorie</mat-label>
+          <mat-select [(ngModel)]="filtres.categorie_id" (selectionChange)="appliquerFiltres()">
+            <mat-option value="">Toutes</mat-option>
+            <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.libelle }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date début</mat-label>
+          <input matInput [matDatepicker]="dpDebut" [(ngModel)]="filtres.date_debut" (dateChange)="appliquerFiltres()">
+          <mat-datepicker-toggle matSuffix [for]="dpDebut"></mat-datepicker-toggle>
+          <mat-datepicker #dpDebut></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date fin</mat-label>
+          <input matInput [matDatepicker]="dpFin" [(ngModel)]="filtres.date_fin" (dateChange)="appliquerFiltres()">
+          <mat-datepicker-toggle matSuffix [for]="dpFin"></mat-datepicker-toggle>
+          <mat-datepicker #dpFin></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-stroked-button (click)="reinitialiser()" class="btn-reset">
+          Réinitialiser
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Chargement -->
+  <div *ngIf="chargement" class="center-spinner">
+    <mat-spinner diameter="48" color="primary"></mat-spinner>
+  </div>
+
+  <!-- Tableau des ventes -->
+  <mat-card *ngIf="!chargement" class="table-card">
+    <mat-card-content class="p-0">
+      <table mat-table [dataSource]="ventes" class="w-full">
+
+        <!-- Colonne Bien -->
+        <ng-container matColumnDef="bien">
+          <th mat-header-cell *matHeaderCellDef>Bien</th>
+          <td mat-cell *matCellDef="let v" class="fw-semibold">{{ v.bien?.titre }}</td>
+        </ng-container>
+
+        <!-- Colonne Catégorie -->
+        <ng-container matColumnDef="categorie">
+          <th mat-header-cell *matHeaderCellDef>Catégorie</th>
+          <td mat-cell *matCellDef="let v">
+            <span class="ana-badge ana-badge--done">{{ v.bien?.categorie?.libelle }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Colonne Prix final -->
+        <ng-container matColumnDef="prix_final">
+          <th mat-header-cell *matHeaderCellDef>Prix final</th>
+          <td mat-cell *matCellDef="let v" class="montant-cell">
+            {{ formatFCFA(v.offre_gagnante?.montant ?? 0) }}
+          </td>
+        </ng-container>
+
+        <!-- Colonne Gagnant (ID anonyme) -->
+        <ng-container matColumnDef="gagnant">
+          <th mat-header-cell *matHeaderCellDef>Gagnant (ID)</th>
+          <td mat-cell *matCellDef="let v">
+            <span class="ana-badge ana-badge--live">{{ v.offre_gagnante?.id_anonyme }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Colonne Date de clôture -->
+        <ng-container matColumnDef="date_cloture">
+          <th mat-header-cell *matHeaderCellDef>Date de clôture</th>
+          <td mat-cell *matCellDef="let v" class="muted">
+            {{ v.date_fin | date:'dd/MM/yyyy' }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['bien', 'categorie', 'prix_final', 'gagnant', 'date_cloture']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['bien', 'categorie', 'prix_final', 'gagnant', 'date_cloture'];"></tr>
+      </table>
+
+      <div *ngIf="ventes.length === 0" class="empty">
+        <mat-icon>search_off</mat-icon>
+        <p>Aucune vente trouvée pour ces filtres.</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Pagination -->
+  <div *ngIf="meta && meta.last_page > 1" class="pagination-wrapper">
+    <mat-paginator
+      [length]="meta.total"
+      [pageSize]="15"
+      [pageIndex]="meta.current_page - 1"
+      (page)="changerPage($event.pageIndex + 1)">
+    </mat-paginator>
+  </div>
+</div>

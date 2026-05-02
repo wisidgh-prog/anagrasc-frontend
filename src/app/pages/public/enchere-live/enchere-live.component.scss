@@ -1,0 +1,44 @@
+.enchere-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.enc-right { display: flex; flex-direction: column; gap: 14px; }
+
+.offres-table { width: 100%; }
+
+.montant-cell { font-weight: 600; color: var(--primary); }
+.muted        { color: var(--text-muted); font-size: 13px; }
+.no-offres    { text-align: center; color: var(--text-muted); padding: 20px 0; }
+.table-titre  { font-size: 15px; font-weight: 600; margin: 16px 0 8px; }
+.description  { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+.timer-card {
+  background: var(--primary) !important;
+  mat-card-content { text-align: center; padding: 20px !important; }
+}
+.timer-label { color: rgba(255,255,255,.6); font-size: 13px; margin-bottom: 4px; }
+
+.meilleure-offre-card mat-card-content { padding: 16px !important; }
+.label-muted { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.prix-live   { font-size: 22px; font-weight: 700; color: var(--success); }
+.small       { font-size: 12px; }
+
+.btn-full     { width: 100%; height: 44px; }
+.info-frais   { font-size: 11px; color: var(--text-muted); margin-top: 8px; line-height: 1.5; }
+
+.connexion-invite {
+  text-align: center;
+  padding: 20px !important;
+  mat-icon { font-size: 36px; color: var(--text-muted); display: block; margin-bottom: 8px; }
+  p   { color: var(--text-muted); margin-bottom: 12px; }
+}
+
+.termine-card mat-card-content {
+  text-align: center;
+  padding: 16px !important;
+  mat-icon { color: var(--text-muted); }
+  p { color: var(--text-muted); }
+}

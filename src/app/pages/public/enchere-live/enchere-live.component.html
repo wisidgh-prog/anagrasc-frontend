@@ -1,1 +1,120 @@
-<p>enchere-live works!</p>
+<div class="page-container" *ngIf="session">
+  <div class="enchere-layout">
+
+    <!-- Colonne gauche : bien + historique -->
+    <div class="enc-left">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ session.bien?.titre }}</mat-card-title>
+          <mat-card-subtitle>
+            <mat-icon>location_on</mat-icon>
+            {{ session.bien?.lieu_retrait }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="description">{{ session.bien?.description }}</p>
+
+          <!-- Tableau historique des offres Material -->
+          <h4 class="table-titre">Historique des offres</h4>
+          <table mat-table [dataSource]="offres" class="offres-table">
+
+            <ng-container matColumnDef="id_anonyme">
+              <th mat-header-cell *matHeaderCellDef>ID</th>
+              <td mat-cell *matCellDef="let o">
+                <strong>{{ o.id_anonyme }}</strong>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="montant">
+              <th mat-header-cell *matHeaderCellDef>Montant</th>
+              <td mat-cell *matCellDef="let o" class="montant-cell">
+                {{ formatFCFA(o.montant) }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="heure">
+              <th mat-header-cell *matHeaderCellDef>Heure</th>
+              <td mat-cell *matCellDef="let o" class="muted">
+                {{ o.heure }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="colonnes"></tr>
+            <tr mat-row *matRowDef="let r; columns: colonnes;"></tr>
+          </table>
+
+          <p *ngIf="offres.length === 0" class="no-offres">
+            Aucune offre pour l'instant.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Colonne droite : timer + enchérir -->
+    <div class="enc-right">
+
+      <!-- Timer -->
+      <mat-card class="timer-card">
+        <mat-card-content>
+          <p class="timer-label">Temps restant</p>
+          <div class="ana-timer"
+               [class.ana-timer--urgent]="secondesRestantes < 60">
+            {{ timerFormate }}
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Meilleure offre -->
+      <mat-card class="meilleure-offre-card">
+        <mat-card-content>
+          <p class="label-muted">Meilleure offre actuelle</p>
+          <p class="prix-live">
+            {{ meilleureOffre ? formatFCFA(meilleureOffre) : 'Aucune offre' }}
+          </p>
+          <p *ngIf="idMeilleur" class="label-muted small">
+            par {{ idMeilleur }}
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Formulaire enchère -->
+      <mat-card *ngIf="auth.estConnecte && secondesRestantes > 0">
+        <mat-card-content>
+          <mat-form-field appearance="outline">
+            <mat-label>Votre offre (FCFA)</mat-label>
+            <input matInput type="number" [(ngModel)]="monOffre"
+                   [placeholder]="'Min : ' + formatFCFA(meilleureOffre + (session?.montant_min_surenchere ?? 1000))">
+            <mat-icon matPrefix>gavel</mat-icon>
+          </mat-form-field>
+          <button mat-raised-button class="ana-btn-accent btn-full"
+                  (click)="placerOffre()" [disabled]="chargement">
+            <mat-spinner *ngIf="chargement" diameter="20"></mat-spinner>
+            <span *ngIf="!chargement">Enchérir</span>
+          </button>
+          <p class="info-frais">
+            Surenchère min : {{ formatFCFA(session?.montant_min_surenchere ?? 1000) }}<br>
+            Frais d'adjudication : 8% du prix final
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Invitation connexion -->
+      <mat-card *ngIf="!auth.estConnecte">
+        <mat-card-content class="connexion-invite">
+          <mat-icon>lock</mat-icon>
+          <p>Connectez-vous pour enchérir</p>
+          <a mat-raised-button class="ana-btn-primary"
+             routerLink="/connexion">Se connecter</a>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Session terminée -->
+      <mat-card *ngIf="secondesRestantes === 0" class="termine-card">
+        <mat-card-content>
+          <mat-icon>timer_off</mat-icon>
+          <p>Enchère clôturée</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
