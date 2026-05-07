@@ -37,12 +37,14 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Statut</mat-label>
-            <mat-select [(ngModel)]="filtres.statut"
-                        (selectionChange)="chargerBiens()">
+           <mat-select [(ngModel)]="filtres.statut"
+            panelClass="custom-select-panel">
               <mat-option value="">Tous</mat-option>
               <mat-option value="en_cours">En cours</mat-option>
               <mat-option value="publie">À venir</mat-option>
             </mat-select>
+
+
           </mat-form-field>
 
           <button mat-stroked-button (click)="reinitialiser()"

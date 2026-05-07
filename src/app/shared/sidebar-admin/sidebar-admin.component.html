@@ -1,0 +1,29 @@
+<div class="sidebar">
+  <div class="sidebar-section">Pilotage</div>
+  <a mat-button class="sidebar-link" [class.active]="estActif('/admin')"
+     routerLink="/admin">
+    <mat-icon>grid_view</mat-icon> Vue d'ensemble
+  </a>
+  <a mat-button class="sidebar-link" [class.active]="estActif('/admin/utilisateurs')"
+     routerLink="/admin/utilisateurs">
+    <mat-icon>people</mat-icon> Utilisateurs
+  </a>
+
+  <div class="sidebar-section">Traçabilité</div>
+  <a mat-button class="sidebar-link" [class.active]="estActif('/admin/logs')"
+     routerLink="/admin/logs">
+    <mat-icon>article</mat-icon> Logs
+  </a>
+
+  <div class="sidebar-section">Système</div>
+  <a mat-button class="sidebar-link" [class.active]="estActif('/admin/configuration')"
+     routerLink="/admin/configuration">
+    <mat-icon>settings</mat-icon> Configuration
+  </a>
+
+  <div class="sidebar-footer">
+    <button mat-button color="warn" (click)="deconnecter()">
+      <mat-icon>logout</mat-icon> Déconnexion
+    </button>
+  </div>
+</div>

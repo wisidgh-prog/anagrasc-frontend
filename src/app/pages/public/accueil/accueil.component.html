@@ -1,1 +1,135 @@
-<p>accueil works!</p>
+<!-- HERO -->
+<section class="hero-section">
+  <div class="hero-content">
+    <h1>Enchères Judiciaires <span class="hero-accent">ANAGRASC</span></h1>
+    <p>Plateforme officielle des ventes judiciaires du Burkina Faso. Transparence, sécurité et conformité légale.</p>
+    <div class="hero-actions">
+      <a mat-raised-button class="ana-btn-accent" routerLink="/catalogue">Voir le catalogue</a>
+      <a mat-stroked-button routerLink="/inscription">Créer un compte</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATISTIQUES -->
+<section class="stats-section">
+  <div class="page-container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">{{ sessionsEnCours.length }}</div>
+        <div class="stat-label">Enchères en cours</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ sessionsAVenir.length }}</div>
+        <div class="stat-label">À venir</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" style="color: var(--accent);">7</div>
+        <div class="stat-label">Catégories de biens</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENCHÈRES EN COURS -->
+<section class="encheres-section">
+  <div class="page-container">
+    <div class="section-header">
+      <h2>Enchères en cours</h2>
+      <a mat-button routerLink="/catalogue">Voir tout →</a>
+    </div>
+
+    <div *ngIf="chargement" class="center-spinner">
+      <mat-spinner diameter="48" color="primary"></mat-spinner>
+    </div>
+
+    <div *ngIf="!chargement && sessionsEnCours.length === 0" class="empty-msg">
+      Aucune enchère en cours pour le moment. <a routerLink="/catalogue">Voir les prochaines enchères</a>
+    </div>
+
+    <div class="biens-grid">
+      <mat-card *ngFor="let bien of sessionsEnCours" class="bien-card">
+        <div class="bien-img-wrapper">
+          <img *ngIf="bien.photos?.length" [src]="'http://localhost:8000/storage/' + bien.photos[0].url" [alt]="bien.titre">
+          <div *ngIf="!bien.photos?.length" class="no-photo"><mat-icon>image</mat-icon></div>
+          <span class="ana-badge ana-badge--live status-badge">EN COURS</span>
+        </div>
+        <mat-card-content>
+          <mat-chip class="categorie-chip">{{ bien.categorie?.libelle }}</mat-chip>
+          <h3 class="bien-titre">{{ bien.titre }}</h3>
+          <p class="bien-lieu"><mat-icon>location_on</mat-icon> {{ bien.lieu_retrait }}</p>
+          <div class="bien-prix-container">
+            <span class="label-muted">Mise à prix</span>
+            <span class="prix">{{ formatFCFA(bien.mise_a_prix) }}</span>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-raised-button class="ana-btn-primary" [routerLink]="['/biens', bien.id]">Participer</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<!-- PROCHAINES ENCHÈRES -->
+<section class="prochaines-section">
+  <div class="page-container">
+    <h2>Prochaines enchères</h2>
+    <div class="prochaines-grid">
+      <mat-card *ngFor="let bien of sessionsAVenir" class="prochaine-card">
+        <mat-card-content>
+          <span class="ana-badge ana-badge--soon">À VENIR</span>
+          <h3 class="bien-titre">{{ bien.titre }}</h3>
+          <p class="label-muted">{{ bien.categorie?.libelle }}</p>
+          <div class="prix">{{ formatFCFA(bien.mise_a_prix) }}</div>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-button [routerLink]="['/biens', bien.id]">Voir le détail</a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="comment-section">
+  <div class="page-container">
+    <h2>Comment participer ?</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-circle"><mat-icon>person_add</mat-icon></div>
+        <h4>1. S'inscrire</h4>
+        <p>Créer un compte et fournir votre pièce d'identité</p>
+      </div>
+      <div class="step">
+        <div class="step-circle"><mat-icon>account_balance_wallet</mat-icon></div>
+        <h4>2. Créditer le wallet</h4>
+        <p>Déposer des fonds via Orange Money ou Moov Money</p>
+      </div>
+      <div class="step">
+        <div class="step-circle"><mat-icon>gavel</mat-icon></div>
+        <h4>3. Enchérir</h4>
+        <p>Placer des offres sur les biens de votre choix</p>
+      </div>
+      <div class="step">
+        <div class="step-circle accent-circle"><mat-icon>trophy</mat-icon></div>
+        <h4>4. Remporter</h4>
+        <p>Si votre offre est la plus haute, le bien est adjugé</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="app-footer">
+  <div class="page-container">
+    <div class="footer-brand">ANAGRASC</div>
+    <p>Agence Nationale de Gestion et de Recouvrement des Avoirs Saisis et Confisqués</p>
+    <p class="footer-location">Burkina Faso • Enchères judiciaires officielles</p>
+    <div class="footer-links">
+      <a routerLink="/catalogue">Catalogue</a>
+      <a routerLink="/ventes-passees">Historique</a>
+      <a routerLink="/conditions">Conditions</a>
+      <a routerLink="/connexion">Connexion</a>
+    </div>
+  </div>
+</footer>

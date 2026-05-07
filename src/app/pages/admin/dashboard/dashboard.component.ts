@@ -9,7 +9,7 @@ import { ApiService } from '../../../core/services/api.service';
 export class DashboardAdminComponent implements OnInit {
   stats: any = null;
   chargement = true;
-
+  metrics: any[] = [];
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
@@ -20,6 +20,14 @@ export class DashboardAdminComponent implements OnInit {
       },
       error: () => { this.chargement = false; }
     });
+    this.metrics = [
+  { label: 'Enchères en cours', value: this.stats.encheres_en_cours, color: 'var(--primary)' },
+  { label: 'À venir', value: this.stats.encheres_a_venir, color: 'var(--primary)' },
+  { label: 'Enchérisseurs', value: this.stats.encherisseurs_total, color: 'var(--primary)' },
+  { label: 'En attente', value: this.stats.comptes_en_attente, color: '#f57f17' },
+  { label: 'Recettes du mois', value: this.formatFCFA(this.stats.recettes_du_mois), color: '#059669' },
+  { label: 'Cautions bloquées', value: this.formatFCFA(this.stats.cautions_bloquees), color: '#c62828' },
+       ];
   }
 
   formatFCFA(n: number): string {

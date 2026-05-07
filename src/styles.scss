@@ -230,3 +230,15 @@ mat-card.ana-mat-card {
   background: #c62828 !important;
   color: #fff !important;
 }
+
+/* Fix Angular Material dropdown partout */
+mat-card,
+.mat-mdc-card,
+aside {
+  overflow: visible !important;
+}
+.cdk-overlay-container {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+}

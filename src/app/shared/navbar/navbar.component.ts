@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -6,13 +7,22 @@ import { AuthService } from '../../core/services/auth.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   utilisateur: any = null;
+  private userSubscription!: Subscription;
 
   constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
-    this.auth.currentUser$.subscribe(u => this.utilisateur = u);
+    this.userSubscription = this.auth.currentUser$.subscribe(u => {
+      this.utilisateur = u;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
   }
 
   get estConnecte(): boolean { return this.auth.estConnecte; }

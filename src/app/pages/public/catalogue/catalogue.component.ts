@@ -20,12 +20,15 @@ export class CatalogueComponent implements OnInit {
   }
 
   chargerBiens(): void {
-    this.chargement = true;
-    this.api.getBiens(this.filtres).subscribe({
-      next : r => { this.biens = r.data; this.chargement = false; },
-      error: () => { this.chargement = false; }
-    });
-  }
+  this.chargement = true;
+  this.api.getBiens(this.filtres).subscribe({
+    next: (res) => {
+      this.biens = res.data?.data ?? [];   // extrait le tableau paginé
+      this.chargement = false;
+    },
+    error: () => { this.chargement = false; }
+  });
+}
 
   reinitialiser(): void {
     this.filtres = { search: '', categorie_id: '', statut: '' };

@@ -1,1 +1,114 @@
-<p>conditions works!</p>
+<div class="conditions-header">
+  <div class="page-container">
+    <h1>Conditions générales d'utilisation</h1>
+    <p>ANAGRASC – Plateforme des enchères judiciaires – Burkina Faso</p>
+  </div>
+</div>
+
+<div class="page-container conditions-layout">
+
+  <!-- Sommaire latéral -->
+  <aside class="conditions-summary">
+    <div class="summary-title">SOMMAIRE</div>
+    <button
+      *ngFor="let item of menuItems"
+      class="summary-link"
+      [class.active]="sectionActive === item.id"
+      (click)="allerSection(item.id)">
+      {{ item.label }}
+    </button>
+  </aside>
+
+  <!-- Contenu principal -->
+  <main class="conditions-content">
+
+    <!-- SECTION 1 -->
+    <div id="inscription" class="condition-section">
+      <h2><span class="section-num">1</span> Inscription et validation du compte</h2>
+      <p>Toute personne physique majeure (18 ans et plus) ou personne morale regulierement constituee peut s'inscrire sur la plateforme ANAGRASC.</p>
+      <ul>
+        <li>L'inscription necessite la fourniture d'une <strong>piece d'identite valide</strong> (CNIB, passeport, carte consulaire, carte AES ou permis de conduire pour les personnes physiques ; RCCM pour les personnes morales).</li>
+        <li>Chaque demande est examinee par l'administration ANAGRASC dans un <strong>delai de 24 heures ouvrables</strong>.</li>
+        <li>Un compte non valide ne peut pas participer aux encheres.</li>
+        <li>Toute information falsifiee entraine la suspension immediate du compte.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div id="wallet" class="condition-section">
+      <h2><span class="section-num">2</span> Portefeuille electronique (Wallet)</h2>
+      <p>Chaque encherisseur dispose d'un <strong>portefeuille electronique</strong> qui doit etre alimente avant de pouvoir participer a une enchere.</p>
+      <ul>
+        <li>Le rechargement s'effectue via <strong>Orange Money, Moov Money ou Coris Money</strong>.</li>
+        <li>Le solde du wallet est affiche en temps reel dans l'espace personnel.</li>
+        <li>Les fonds deposes ne sont pas remboursables sauf dans les cas prevus par les presentes conditions (remboursement de caution).</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div id="caution" class="condition-section">
+      <h2><span class="section-num">3</span> Caution de participation</h2>
+      <p>Une <strong>caution de 0,1% de la mise a prix</strong> (minimum 1 000 FCFA) est automatiquement prelevee sur le wallet lors de la premiere offre placee sur une session.</p>
+      <ul>
+        <li>La caution est <strong>remboursee automatiquement</strong> a tous les encherisseurs qui n'ont pas remporte la vente, des la cloture de la session.</li>
+        <li>La caution est <strong>definitivement conservee</strong> par l'ANAGRASC si le gagnant ne procede pas au paiement dans le delai imparti.</li>
+        <li>Un solde insuffisant pour couvrir la caution empeche de placer une offre.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div id="enchere" class="condition-section">
+      <h2><span class="section-num">4</span> Deroulement des encheres</h2>
+      <ul>
+        <li>Chaque enchere est limitee dans le temps. La <strong>cloture est stricte :</strong> aucune offre n'est acceptee apres l'heure de fin.</li>
+        <li>Chaque offre doit depasser la meilleure offre en cours d'un montant minimum defini par le commissaire-priseur.</li>
+        <li>L'<strong>identite des encherisseurs est anonyme</strong> pendant toute la duree de l'enchere. Seul un identifiant de type ENCH-042 est visible.</li>
+        <li>Le commissaire-priseur peut interrompre une session en cas d'incident signale par le superviseur.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div id="paiement" class="condition-section">
+      <h2><span class="section-num">5</span> Paiement et frais d'adjudication</h2>
+      <div class="warning-box">
+        <strong>Frais d'adjudication : 8% du prix final</strong>, deduits de la caution deja versee.
+      </div>
+      <ul style="margin-top:12px;">
+        <li>Le gagnant de l'enchere doit regler le montant total dans un <strong>delai de 48 heures</strong> suivant la cloture.</li>
+        <li>Le total a payer = <strong>Prix adjuge + 8% de frais - Caution deja versee.</strong></li>
+        <li>Le paiement s'effectue via le wallet electronique de la plateforme.</li>
+      </ul>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div id="defaillance" class="condition-section">
+      <h2><span class="section-num">6</span> Defaillance de l'adjudicataire</h2>
+      <div class="danger-box">
+        <p class="danger-title">Consequences d'un non-paiement dans les 48h :</p>
+        <ul>
+          <li>La <strong>caution est definitivement conservee</strong> par l'ANAGRASC a titre de penalite.</li>
+          <li>Le bien est <strong>propose au second encherisseur</strong> si son offre est superieure ou egale au prix de reserve.</li>
+          <li>Si aucun candidat n'est eligible, le bien est <strong>remis en vente</strong> lors d'une prochaine session.</li>
+          <li>Les defaillances repetees peuvent entrainer la <strong>suspension du compte.</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div id="confidentialite" class="condition-section">
+      <h2><span class="section-num">7</span> Confidentialite et protection des donnees</h2>
+      <ul>
+        <li>Les <strong>pieces d'identite</strong> sont stockees de facon securisee et ne sont accessibles qu'aux administrateurs de l'ANAGRASC.</li>
+        <li>Les donnees personnelles ne sont pas vendues ni transmises a des tiers.</li>
+        <li>Conformement a la legislation burkinabe, vous disposez d'un droit d'acces, de rectification et de suppression de vos donnees.</li>
+      </ul>
+    </div>
+
+    <!-- Bouton d'appel à l'action -->
+    <div class="cta-center">
+      <a mat-raised-button color="primary" routerLink="/inscription">
+        S'inscrire maintenant
+      </a>
+    </div>
+  </main>
+</div>

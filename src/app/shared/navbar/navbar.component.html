@@ -8,17 +8,20 @@
 
   <span class="spacer"></span>
 
-  <!-- Liens publics -->
-  <button mat-button routerLink="/catalogue"
-          routerLinkActive="active">
-    <mat-icon>gavel</mat-icon> Enchères
-  </button>
-  <button mat-button routerLink="/ventes-passees"
-          routerLinkActive="active">
-    Historique
-  </button>
+  <!-- Liens publics : visibles uniquement pour les visiteurs et les enchérisseurs -->
+  <ng-container *ngIf="!estConnecte || role === 'encherisseur'">
+    <button mat-button routerLink="/catalogue" routerLinkActive="active">
+      <mat-icon>gavel</mat-icon> Enchères
+    </button>
+    <button mat-button routerLink="/ventes-passees" routerLinkActive="active">
+      Historique
+    </button>
+    <button mat-button routerLink="/conditions" routerLinkActive="active">
+      Conditions
+    </button>
+  </ng-container>
 
-  <!-- Liens enchérisseur -->
+  <!-- Liens enchérisseur (uniquement si connecté en tant qu'enchérisseur) -->
   <ng-container *ngIf="role === 'encherisseur'">
     <button mat-button routerLink="/mon-espace" routerLinkActive="active">
       <mat-icon>person</mat-icon> Mon espace
@@ -28,44 +31,9 @@
     </button>
   </ng-container>
 
-  <!-- Liens commissaire -->
-  <ng-container *ngIf="role === 'commissaire_priseur'">
-    <button mat-button routerLink="/commissaire" routerLinkActive="active">
-      Dashboard
-    </button>
-    <button mat-button routerLink="/commissaire/biens" routerLinkActive="active">
-      Biens
-    </button>
-    <button mat-button routerLink="/commissaire/sessions" routerLinkActive="active">
-      Sessions
-    </button>
-    <button mat-button routerLink="/commissaire/incidents"
-            routerLinkActive="active">
-      <mat-icon>warning</mat-icon> Incidents
-    </button>
-  </ng-container>
-
-  <!-- Liens superviseur -->
-  <ng-container *ngIf="role === 'superviseur'">
-    <button mat-button routerLink="/superviseur" routerLinkActive="active">
-      Mes sessions
-    </button>
-  </ng-container>
-
-  <!-- Liens admin -->
-  <ng-container *ngIf="role === 'administrateur'">
-    <button mat-button routerLink="/admin" routerLinkActive="active">
-      Dashboard
-    </button>
-    <button mat-button routerLink="/admin/utilisateurs" routerLinkActive="active">
-      Utilisateurs
-    </button>
-  </ng-container>
-
   <!-- Boutons droite -->
   <ng-container *ngIf="estConnecte; else nonConnecte">
-
-    <!-- Menu utilisateur -->
+    <!-- Menu utilisateur (pour tous les rôles connectés) -->
     <button mat-button [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
       {{ utilisateur?.nom_complet }}
@@ -80,8 +48,7 @@
 
   <ng-template #nonConnecte>
     <button mat-button routerLink="/connexion">Connexion</button>
-    <button mat-raised-button class="ana-btn-accent"
-            routerLink="/inscription">
+    <button mat-raised-button class="ana-btn-accent" routerLink="/inscription">
       S'inscrire
     </button>
   </ng-template>

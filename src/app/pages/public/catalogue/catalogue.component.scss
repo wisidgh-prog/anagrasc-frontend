@@ -14,17 +14,14 @@
   grid-template-columns: 260px 1fr;
   gap: 20px;
   align-items: start;
+   overflow: visible;
 }
 
 .filtres-panel {
   align-self: start;
-  mat-card { padding: 4px; }
-  mat-card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 16px;
-  }
+  // mat-card { padding: 4px; }
+  overflow: visible;
+
 }
 
 .biens-grid {
@@ -60,4 +57,10 @@
 .empty {
   text-align: center; padding: 60px; color: var(--text-muted);
   mat-icon { font-size: 48px; display: block; margin-bottom: 8px; }
+}
+mat-card {
+  overflow: visible !important;
+}
+.page-container {
+  overflow: visible !important;
 }

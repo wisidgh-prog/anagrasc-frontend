@@ -32,17 +32,37 @@ import { UtilisateursComponent } from './pages/admin/utilisateurs/utilisateurs.c
 import { LogsComponent }     from './pages/admin/logs/logs.component';
 import { ConfigurationComponent } from './pages/admin/configuration/configuration.component';
 
+import { SidebarCommissaireComponent } from './shared/sidebar-commissaire/sidebar-commissaire.component';
+import { SidebarSuperviseurComponent } from './shared/sidebar-superviseur/sidebar-superviseur.component';
+import { SidebarAdminComponent } from './shared/sidebar-admin/sidebar-admin.component';
+
 @NgModule({
    declarations: [
-     AppComponent, NavbarComponent,
-     ConnexionComponent, InscriptionComponent, AccueilComponent,
-     CatalogueComponent, EnchereLiveComponent, VentesPasseesComponent,
+     AppComponent,
+      NavbarComponent,
+     ConnexionComponent,
+     InscriptionComponent,
+      AccueilComponent,
+     CatalogueComponent,
+     EnchereLiveComponent,
+      VentesPasseesComponent,
      ConditionsComponent,
-     DashboardEncherisseurComponent, WalletComponent, ParticipationsComponent,
-     DashboardCommissaireComponent, BiensComponent, SessionsComponent,
-     IncidentsComponent, DashboardSuperviseurComponent, SupervisionComponent,
-     DashboardAdminComponent, UtilisateursComponent, LogsComponent,
+     DashboardEncherisseurComponent,
+      WalletComponent,
+       ParticipationsComponent,
+     DashboardCommissaireComponent,
+      BiensComponent,
+       SessionsComponent,
+     IncidentsComponent,
+      DashboardSuperviseurComponent,
+       SupervisionComponent,
+     DashboardAdminComponent,
+      UtilisateursComponent,
+       LogsComponent,
      ConfigurationComponent,
+     SidebarAdminComponent,
+     SidebarCommissaireComponent,
+     SidebarSuperviseurComponent,
    ],
    imports: [
      BrowserModule,

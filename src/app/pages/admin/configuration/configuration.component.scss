@@ -1,0 +1,16 @@
+.page-container { max-width:1200px; margin:0 auto; padding:24px 16px; }
+.page-title { font-weight:600; color:var(--primary); margin-bottom:8px; }
+.center-spinner { display:flex; justify-content:center; padding:60px; }
+
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.config-card {
+  border-radius: var(--radius)!important;
+}
+
+.w-full { width:100%; }
+.small { font-size:12px; }

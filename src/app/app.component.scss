@@ -1,0 +1,14 @@
+.d-flex { display: flex; }
+.sidebar-container {
+  width: 220px;
+  min-width: 220px;
+  min-height: calc(100vh - 56px);
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+}
+.main-content {
+  flex-grow: 1;
+  background: var(--surface);
+  min-height: calc(100vh - 56px);
+}
+

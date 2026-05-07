@@ -1,0 +1,40 @@
+<div class="sidebar">
+
+  <!-- Profil -->
+  <div class="sidebar-profile">
+    <div class="profile-avatar">CP</div>
+    <div>
+      <div class="profile-name">Commissaire</div>
+      <div class="profile-role">ANAGRASC</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">Principal</div>
+  <a mat-button class="sidebar-link"
+     [class.active]="estActif('/commissaire') && !estActif('/commissaire/biens') && !estActif('/commissaire/sessions') && !estActif('/commissaire/incidents')"
+     routerLink="/commissaire">
+    <mat-icon>grid_view</mat-icon> Vue d'ensemble
+  </a>
+
+  <div class="sidebar-section">Gestion</div>
+  <a mat-button class="sidebar-link" [class.active]="estActif('/commissaire/biens')"
+     routerLink="/commissaire/biens">
+    <mat-icon>inventory_2</mat-icon> Mes biens
+  </a>
+  <a mat-button class="sidebar-link" [class.active]="estActif('/commissaire/sessions')"
+     routerLink="/commissaire/sessions">
+    <mat-icon>calendar_month</mat-icon> Sessions
+  </a>
+
+  <div class="sidebar-section">Enchères</div>
+  <a mat-button class="sidebar-link" [class.active]="estActif('/commissaire/incidents')"
+     routerLink="/commissaire/incidents">
+    <mat-icon>warning</mat-icon> Incidents
+  </a>
+
+  <div class="sidebar-footer">
+    <button mat-button color="warn" (click)="deconnecter()">
+      <mat-icon>logout</mat-icon> Déconnexion
+    </button>
+  </div>
+</div>
