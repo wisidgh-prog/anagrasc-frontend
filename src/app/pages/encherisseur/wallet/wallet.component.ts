@@ -10,6 +10,7 @@ import { AuthService } from '../../../core/services/auth.service';
 export class WalletComponent implements OnInit {
   wallet: any = null;
   transactions: any[] = [];
+  rechargeForm: FormGroup;
   erreur = '';
   message = '';
   chargement = false;
