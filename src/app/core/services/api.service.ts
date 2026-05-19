@@ -50,6 +50,9 @@ export class ApiService {
     const r = role === 'superviseur' ? 'superviseur/sessions' : 'commissaire/sessions';
     return this.http.get(`${this.url}/${r}`);
   }
+  getSuperviseurs(): Observable<any>                 { return this.http.get(`${this.url}/superviseurs`);
+}
+
   creerSession(d: any): Observable<any>              { return this.http.post(`${this.url}/sessions`, d); }
   modifierSession(id: number, d: any): Observable<any> { return this.http.put(`${this.url}/sessions/${id}`, d); }
   superviserSession(id: number): Observable<any>     { return this.http.get(`${this.url}/superviseur/sessions/${id}`); }
@@ -72,4 +75,13 @@ export class ApiService {
   modifierConfiguration(id: number, valeur: string): Observable<any> { return this.http.put(`${this.url}/configurations/${id}`, { valeur }); }
   getDashboardAdmin(): Observable<any>               { return this.http.get(`${this.url}/admin/dashboard`); }
   getDashboardCommissaire(): Observable<any>         { return this.http.get(`${this.url}/commissaire/dashboard`); }
+  getPermissions(): Observable<any>                    { return this.http.get(`${this.url}/permissions`); }
+  getRoles(): Observable<any>                        { return this.http.get(`${this.url}/roles`); }
+  creerRole(d: any): Observable<any>                 { return this.http.post(`${this.url}/roles`, d); }
+  modifierRole(id: number, d: any): Observable<any>   { return this.http.put(`${this.url}/roles/${id}`, d); }
+  supprimerRole(id: number): Observable<any>          { return this.http.delete(`${this.url}/roles/${id}`); }
+
+  syncRolePermissions(roleId: number, permIds: number[]): Observable<any> {
+    return this.http.post(`${this.url}/roles/${roleId}/permissions`, { permissions: permIds });
+}
 }

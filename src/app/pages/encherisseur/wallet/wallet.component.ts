@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -23,8 +24,15 @@ export class WalletComponent implements OnInit {
 
   constructor(
     private api: ApiService,
-    public auth: AuthService
-  ) {}
+    public auth: AuthService,
+    private fb: FormBuilder
+  ) {
+    this.rechargeForm = this.fb.group({
+      montant: ['', [Validators.required, Validators.min(100)]],
+      mode_paiement: ['orange_money', Validators.required],
+      telephone_paiement: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]]
+    });
+  }
 
   ngOnInit(): void {
     this.chargerWallet();
@@ -42,13 +50,18 @@ export class WalletComponent implements OnInit {
   }
 
   recharger(): void {
+    if (this.rechargeForm.invalid) {
+      this.erreur = 'Veuillez remplir correctement tous les champs.';
+      return;
+    }
     this.erreur = '';
     this.message = '';
     this.chargement = true;
-    this.api.deposerWallet(this.recharge).subscribe({
+    this.api.deposerWallet(this.rechargeForm.value).subscribe({
       next: (res) => {
         this.message = res.message;
         this.chargement = false;
+        this.rechargeForm.reset({ mode_paiement: 'orange_money' });
         this.chargerWallet();
         this.chargerTransactions();
       },

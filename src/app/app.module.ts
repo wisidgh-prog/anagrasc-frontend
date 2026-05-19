@@ -31,10 +31,11 @@ import { DashboardAdminComponent } from './pages/admin/dashboard/dashboard.compo
 import { UtilisateursComponent } from './pages/admin/utilisateurs/utilisateurs.component';
 import { LogsComponent }     from './pages/admin/logs/logs.component';
 import { ConfigurationComponent } from './pages/admin/configuration/configuration.component';
-
+import{TimerComponent} from './shared/timer/timer.component';
 import { SidebarCommissaireComponent } from './shared/sidebar-commissaire/sidebar-commissaire.component';
 import { SidebarSuperviseurComponent } from './shared/sidebar-superviseur/sidebar-superviseur.component';
 import { SidebarAdminComponent } from './shared/sidebar-admin/sidebar-admin.component';
+import { RolesComponent } from './pages/admin/roles/roles.component';
 
 @NgModule({
    declarations: [
@@ -63,6 +64,8 @@ import { SidebarAdminComponent } from './shared/sidebar-admin/sidebar-admin.comp
      SidebarAdminComponent,
      SidebarCommissaireComponent,
      SidebarSuperviseurComponent,
+     TimerComponent,
+     RolesComponent
    ],
    imports: [
      BrowserModule,

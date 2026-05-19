@@ -29,57 +29,70 @@
       <mat-card-title>{{ modeFormulaire === 'ajout' ? 'Ajouter un bien' : 'Modifier le bien' }}</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Titre *</mat-label>
-            <input matInput [(ngModel)]="form.titre" placeholder="Ex: Toyota Land Cruiser 2020">
-          </mat-form-field>
+      <form [formGroup]="bienForm" (ngSubmit)="soumettre()">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Titre *</mat-label>
+              <input matInput formControlName="titre" placeholder="Ex: Toyota Land Cruiser 2020">
+              <mat-error *ngIf="bienForm.get('titre')?.hasError('required')">Titre requis</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Catégorie *</mat-label>
+              <mat-select formControlName="categorie_id">
+                <mat-option value="">Sélectionner…</mat-option>
+                <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.libelle }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="bienForm.get('categorie_id')?.hasError('required')">Catégorie requise</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Description *</mat-label>
+              <textarea matInput rows="3" formControlName="description" placeholder="État, caractéristiques…"></textarea>
+              <mat-error *ngIf="bienForm.get('description')?.hasError('required')">Description requise</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Mise à prix (FCFA) *</mat-label>
+              <input matInput type="number" formControlName="mise_a_prix">
+              <mat-error *ngIf="bienForm.get('mise_a_prix')?.hasError('required')">Prix requis</mat-error>
+              <mat-error *ngIf="bienForm.get('mise_a_prix')?.hasError('min')">Doit être positif</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-8">
+            <mat-form-field appearance="outline">
+              <mat-label>Lieu de retrait *</mat-label>
+              <input matInput formControlName="lieu_retrait" placeholder="ex: Abattoir de Kossodo">
+              <mat-error *ngIf="bienForm.get('lieu_retrait')?.hasError('required')">Lieu requis</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Horaires de visite</mat-label>
+              <input matInput formControlName="horaires_visite" placeholder="Lun-Ven 08h-17h">
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Remarques</mat-label>
+              <input matInput formControlName="remarques">
+            </mat-form-field>
+          </div>
+          <div class="col-12" *ngIf="modeFormulaire === 'ajout'">
+            <label class="form-label">Photos (JPG, PNG - max 5)</label>
+            <input type="file" accept=".jpg,.jpeg,.png" multiple (change)="onPhotos($event)">
+          </div>
         </div>
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Catégorie *</mat-label>
-            <mat-select [(ngModel)]="form.categorie_id">
-              <mat-option value="">Sélectionner…</mat-option>
-              <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.libelle }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-12">
-          <mat-form-field appearance="outline">
-            <mat-label>Description *</mat-label>
-            <textarea matInput rows="3" [(ngModel)]="form.description" placeholder="État, caractéristiques…"></textarea>
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Mise à prix (FCFA) *</mat-label>
-            <input matInput type="number" [(ngModel)]="form.mise_a_prix">
-          </mat-form-field>
-        </div>
-        <div class="col-md-8">
-          <mat-form-field appearance="outline">
-            <mat-label>Lieu de retrait *</mat-label>
-            <input matInput [(ngModel)]="form.lieu_retrait" placeholder="ex: Abattoir de Kossodo">
-          </mat-form-field>
-        </div>
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Horaires de visite</mat-label>
-            <input matInput [(ngModel)]="form.horaires_visite" placeholder="Lun-Ven 08h-17h">
-          </mat-form-field>
-        </div>
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Remarques</mat-label>
-            <input matInput [(ngModel)]="form.remarques">
-          </mat-form-field>
-        </div>
-        <div class="col-12" *ngIf="modeFormulaire === 'ajout'">
-          <label class="form-label">Photos (JPG, PNG - max 5)</label>
-          <input type="file" accept=".jpg,.jpeg,.png" multiple (change)="onPhotos($event)">
-        </div>
-      </div>
+        <mat-card-actions align="end">
+          <button mat-button (click)="annuler()">Annuler</button>
+          <button mat-raised-button class="ana-btn-primary" type="submit"
+                  [disabled]="bienForm.invalid">Enregistrer</button>
+        </mat-card-actions>
+      </form>
     </mat-card-content>
   </mat-card>
 

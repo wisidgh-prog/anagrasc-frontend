@@ -4,7 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../core/services/api.service';
-
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-utilisateurs',
   templateUrl: './utilisateurs.component.html',
@@ -13,7 +13,7 @@ import { ApiService } from '../../../core/services/api.service';
 export class UtilisateursComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   colonnes = ['nom', 'telephone', 'type', 'role', 'statut', 'actions'];
-  filtres = { est_valide: 'false', role: 'encherisseur', search: '' };
+  filtres = { est_valide: '', role: '', search: '' };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -25,7 +25,7 @@ export class UtilisateursComponent implements OnInit {
   charger(): void {
     this.api.getUtilisateurs(this.filtres).subscribe({
       next: r => {
-        this.dataSource = new MatTableDataSource(r.data.data ?? []);
+        this.dataSource = new MatTableDataSource(r.data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       }
@@ -39,13 +39,13 @@ export class UtilisateursComponent implements OnInit {
   valider(id: number): void {
     this.api.validerCompte(id).subscribe({
       next: r => {
-        this.snack.open(r.message, '', { duration: 3000, panelClass: 'snack-success' });
+        this.snack.open(r.message, '', { duration: 13000, panelClass: 'snack-success' });
         this.charger();
       },
-      error: e => this.snack.open(e.error?.message ?? 'Erreur', 'Fermer', { duration: 3000, panelClass: 'snack-error' })
+      error: e => this.snack.open(e.error?.message ?? 'Erreur', 'Fermer', { duration: 13000, panelClass: 'snack-error' })
     });
   }
-
+//rejeter 
   rejeter(id: number): void {
     const motif = prompt('Motif du rejet :');
     if (!motif) return;

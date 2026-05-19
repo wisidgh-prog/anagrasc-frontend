@@ -57,10 +57,7 @@
       <mat-card class="timer-card">
         <mat-card-content>
           <p class="timer-label">Temps restant</p>
-          <div class="ana-timer"
-               [class.ana-timer--urgent]="secondesRestantes < 60">
-            {{ timerFormate }}
-          </div>
+          <app-timer [secondes]="secondesRestantes"></app-timer>
         </mat-card-content>
       </mat-card>
 

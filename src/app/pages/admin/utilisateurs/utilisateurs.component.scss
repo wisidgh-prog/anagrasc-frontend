@@ -13,3 +13,27 @@
 .w-full{ width:100%; }
 
 tr.mat-mdc-row:hover { background: #f5f7ff; }
+
+
+.filtres-row {
+  overflow: visible !important;
+
+}
+
+mat-card,
+.mat-mdc-card,
+.table-card,
+.filtres-card {
+  overflow: visible !important;
+}
+
+
+// S’assurer que le panneau soit bien au-dessus de tout
+.mat-mdc-select-panel {
+  margin-top: 4px !important; // léger décalage vers le bas
+}
+.mat-mdc-select-panel {
+  background: #fff !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,.15) !important;
+}

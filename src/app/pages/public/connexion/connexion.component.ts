@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../core/services/auth.service';
@@ -9,24 +10,32 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./connexion.component.scss']
 })
 export class ConnexionComponent {
-  telephone  = '';
-  password   = '';
+  connexionForm: FormGroup;
   chargement = false;
   masquerMdp = true;
 
   constructor(
-    private auth    : AuthService,
-    private router  : Router,
+    private fb: FormBuilder,
+    private auth: AuthService,
+    private router: Router,
     private snackbar: MatSnackBar
-  ) {}
+  ) {
+    this.connexionForm = this.fb.group({
+      telephone: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
 
   seConnecter(): void {
-    if (!this.telephone || !this.password) {
-      this.snackbar.open('Veuillez remplir tous les champs.', 'Fermer', { duration: 3000 });
+    if (this.connexionForm.invalid) {
+      this.snackbar.open('Veuillez remplir tous les champs correctement.', 'Fermer', { duration: 3000 });
       return;
     }
     this.chargement = true;
-    this.auth.login(this.telephone, this.password).subscribe({
+    this.auth.login(
+      this.connexionForm.value.telephone,
+      this.connexionForm.value.password
+    ).subscribe({
       next: (res) => {
         const r = res.user.role;
         if      (r === 'encherisseur')        this.router.navigate(['/mon-espace']);

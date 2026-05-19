@@ -15,63 +15,72 @@
       <mat-card-title>Créer une session d'enchère</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div class="row g-3">
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Bien valide *</mat-label>
-            <mat-select [(ngModel)]="form.bien_id">
-              <mat-option value="">Sélectionner un bien publié…</mat-option>
-              <mat-option *ngFor="let b of biensPublies" [value]="b.id">{{ b.titre }}</mat-option>
-            </mat-select>
-          </mat-form-field>
+      <form [formGroup]="sessionForm" (ngSubmit)="creerSession()">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Bien valide </mat-label>
+              <mat-select formControlName="bien_id">
+                <mat-option value="">Sélectionner un bien publié…</mat-option>
+                <mat-option *ngFor="let b of biensPublies" [value]="b.id">{{ b.titre }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="sessionForm.get('bien_id')?.hasError('required')">Bien requis</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Superviseur</mat-label>
+              <mat-select formControlName="superviseur_id">
+                <mat-option value="">Aucun superviseur</mat-option>
+                <mat-option *ngFor="let s of superviseurs" [value]="s.id">{{ s.prenom }} {{ s.nom }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Date et heure de début </mat-label>
+              <input matInput type="datetime-local" formControlName="date_debut">
+              <mat-error *ngIf="sessionForm.get('date_debut')?.hasError('required')">Date obligatoire</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Date et heure de fin </mat-label>
+              <input matInput type="datetime-local" formControlName="date_fin">
+              <mat-error *ngIf="sessionForm.get('date_fin')?.hasError('required')">Date obligatoire</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Mise à prix effective (FCFA) *</mat-label>
+              <input matInput type="number" formControlName="mise_a_prix_effective">
+              <mat-error *ngIf="sessionForm.get('mise_a_prix_effective')?.hasError('required')">Prix requis</mat-error>
+              <mat-error *ngIf="sessionForm.get('mise_a_prix_effective')?.hasError('min')">Doit être ≥ 0</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Surenchère minimum (FCFA) *</mat-label>
+              <input matInput type="number" formControlName="montant_min_surenchere">
+              <mat-error *ngIf="sessionForm.get('montant_min_surenchere')?.hasError('required')">Valeur requise</mat-error>
+              <mat-error *ngIf="sessionForm.get('montant_min_surenchere')?.hasError('min')">Doit être ≥ 1</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Prix de réserve (FCFA) <small class="text-muted">(privé)</small></mat-label>
+              <input matInput type="number" formControlName="prix_reserve" placeholder="Optionnel">
+            </mat-form-field>
+          </div>
         </div>
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Superviseur</mat-label>
-            <mat-select [(ngModel)]="form.superviseur_id">
-              <mat-option value="">Aucun superviseur</mat-option>
-              <mat-option *ngFor="let s of superviseurs" [value]="s.id">
-                {{ s.nom_complet ?? s.nom }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Date et heure de début *</mat-label>
-            <input matInput type="datetime-local" [(ngModel)]="form.date_debut">
-          </mat-form-field>
-        </div>
-        <div class="col-md-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Date et heure de fin *</mat-label>
-            <input matInput type="datetime-local" [(ngModel)]="form.date_fin">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Mise à prix effective (FCFA) *</mat-label>
-            <input matInput type="number" [(ngModel)]="form.mise_a_prix_effective">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Surenchère minimum (FCFA) *</mat-label>
-            <input matInput type="number" [(ngModel)]="form.montant_min_surenchere">
-          </mat-form-field>
-        </div>
-        <div class="col-md-4">
-          <mat-form-field appearance="outline">
-            <mat-label>Prix de réserve (FCFA) <small class="text-muted">(privé)</small></mat-label>
-            <input matInput type="number" [(ngModel)]="form.prix_reserve" placeholder="Optionnel">
-          </mat-form-field>
-        </div>
-      </div>
+        <mat-card-actions align="end">
+          <button mat-button (click)="annuler()">Annuler</button>
+          <button mat-raised-button class="ana-btn-primary" type="submit"
+                  [disabled]="sessionForm.invalid">Créer la session</button>
+        </mat-card-actions>
+      </form>
     </mat-card-content>
-    <mat-card-actions align="end">
-      <button mat-button (click)="annuler()">Annuler</button>
-      <button mat-raised-button class="ana-btn-primary" (click)="creerSession()">Créer la session</button>
-    </mat-card-actions>
+   
   </mat-card>
 
   <!-- Tableau des sessions -->
@@ -124,7 +133,6 @@
             </button>
           </td>
         </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="['bien','debut','fin','mise_a_prix','statut','actions']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['bien','debut','fin','mise_a_prix','statut','actions'];"></tr>
       </table>

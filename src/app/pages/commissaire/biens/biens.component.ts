@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -16,19 +17,25 @@ export class BiensComponent implements OnInit {
 
   modeFormulaire: 'ajout' | 'modification' | null = null;
   bienSelectionne: any = null;
-  form: any = {
-    categorie_id: '',
-    titre: '',
-    description: '',
-    mise_a_prix: '',
-    lieu_retrait: '',
-    horaires_visite: '',
-    remarques: ''
-  };
+  bienForm: FormGroup;
   photosFichiers: File[] = [];
   filtreStatut = '';
 
-  constructor(private api: ApiService, private auth: AuthService) {}
+  constructor(
+    private api: ApiService,
+    private auth: AuthService,
+    private fb: FormBuilder
+  ) {
+    this.bienForm = this.fb.group({
+      categorie_id: ['', Validators.required],
+      titre: ['', Validators.required],
+      description: ['', Validators.required],
+      mise_a_prix: ['', [Validators.required, Validators.min(1)]],
+      lieu_retrait: ['', Validators.required],
+      horaires_visite: [''],
+      remarques: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.api.getCategories().subscribe({ next: res => this.categories = res.data });
@@ -49,17 +56,17 @@ export class BiensComponent implements OnInit {
   ouvrirAjout(): void {
     this.modeFormulaire = 'ajout';
     this.bienSelectionne = null;
-    this.form = {
-      categorie_id: '', titre: '', description: '',
-      mise_a_prix: '', lieu_retrait: '', horaires_visite: '', remarques: ''
-    };
+    this.bienForm.reset({
+      categorie_id: '', titre: '', description: '', mise_a_prix: '',
+      lieu_retrait: '', horaires_visite: '', remarques: ''
+    });
     this.photosFichiers = [];
   }
 
   ouvrirModification(bien: any): void {
     this.modeFormulaire = 'modification';
     this.bienSelectionne = bien;
-    this.form = {
+    this.bienForm.patchValue({
       categorie_id: bien.categorie_id,
       titre: bien.titre,
       description: bien.description,
@@ -67,7 +74,7 @@ export class BiensComponent implements OnInit {
       lieu_retrait: bien.lieu_retrait,
       horaires_visite: bien.horaires_visite ?? '',
       remarques: bien.remarques ?? ''
-    };
+    });
   }
 
   onPhotos(event: any): void {
@@ -75,10 +82,14 @@ export class BiensComponent implements OnInit {
   }
 
   soumettre(): void {
+    if (this.bienForm.invalid) {
+      this.erreur = 'Veuillez remplir tous les champs obligatoires.';
+      return;
+    }
     this.erreur = '';
     this.message = '';
     const fd = new FormData();
-    Object.keys(this.form).forEach(k => fd.append(k, this.form[k]));
+    Object.keys(this.bienForm.value).forEach(k => fd.append(k, this.bienForm.value[k]));
     this.photosFichiers.forEach(f => fd.append('photos[]', f));
 
     if (this.modeFormulaire === 'ajout') {
@@ -91,7 +102,7 @@ export class BiensComponent implements OnInit {
         error: err => this.erreur = err.error?.message ?? 'Erreur lors de la création.'
       });
     } else {
-      this.api.modifierBien(this.bienSelectionne.id, this.form).subscribe({
+      this.api.modifierBien(this.bienSelectionne.id, this.bienForm.value).subscribe({
         next: res => {
           this.message = res.message;
           this.modeFormulaire = null;

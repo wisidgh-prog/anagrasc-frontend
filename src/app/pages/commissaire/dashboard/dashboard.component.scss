@@ -1,0 +1,13 @@
+.stat-card {
+  border-radius: var(--radius) !important;
+  border-top: 3px solid transparent;
+  mat-card-content {
+    text-align: center;
+    padding: 20px !important;
+  }
+}
+.center-spinner { display: flex; justify-content: center; padding: 60px; }
+.w-full { width: 100%; }
+.p-0 { padding: 0 !important; }
+.fw-semibold { font-weight: 600; }
+.muted { color: var(--text-muted); }

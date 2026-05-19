@@ -22,6 +22,7 @@ import { DashboardAdminComponent }from './pages/admin/dashboard/dashboard.compon
 import { UtilisateursComponent } from './pages/admin/utilisateurs/utilisateurs.component';
 import { LogsComponent }         from './pages/admin/logs/logs.component';
 import { ConfigurationComponent }from './pages/admin/configuration/configuration.component';
+import { RolesComponent } from './pages/admin/roles/roles.component';
 
 const routes: Routes = [
   { path: '',                  component: AccueilComponent },
@@ -67,6 +68,7 @@ const routes: Routes = [
       { path: 'utilisateurs',  component: UtilisateursComponent },
       { path: 'logs',          component: LogsComponent },
       { path: 'configuration', component: ConfigurationComponent },
+      { path: 'roles', component: RolesComponent }
     ]},
 
   { path: '**', redirectTo: '' },

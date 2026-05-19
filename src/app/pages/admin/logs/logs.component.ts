@@ -41,7 +41,7 @@ export class LogsComponent implements OnInit {
     this.chargement = true;
     this.api.getLogs(this.filtres).subscribe({
       next: res => {
-        this.logs = res.data.data ?? [];
+        this.logs = res.data ;
         this.meta = res.data;
         this.chargement = false;
       },

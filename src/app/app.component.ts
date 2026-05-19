@@ -7,7 +7,7 @@ import { AuthService } from './core/services/auth.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'anagrasc-frontend';
+  title = 'SGEA';
    constructor(private auth: AuthService) {}
 
   estAdmin(): boolean { return this.auth.role === 'administrateur'; }

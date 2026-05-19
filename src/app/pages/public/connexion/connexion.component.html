@@ -1,48 +1,55 @@
 <div class="connexion-page">
   <mat-card class="connexion-card">
-
+<!-- en tête -->
     <div class="connexion-header">
       <mat-icon class="header-icon">lock</mat-icon>
       <h2>Connexion</h2>
       <p>Plateforme officielle ANAGRASC</p>
     </div>
-
-    <mat-card-content>
-      <!-- Champ téléphone ou email -->
-      <mat-form-field appearance="outline">
-        <mat-label>Téléphone ou email</mat-label>
-        <input matInput [(ngModel)]="telephone"
-               placeholder="+226 XX XX XX XX">
-        <mat-icon matPrefix>phone</mat-icon>
-      </mat-form-field>
-
-      <!-- Champ mot de passe avec bascule visibilité -->
-      <mat-form-field appearance="outline">
-        <mat-label>Mot de passe</mat-label>
-        <input matInput [(ngModel)]="password"
-               [type]="masquerMdp ? 'password' : 'text'">
-        <mat-icon matPrefix>lock</mat-icon>
-        <button matSuffix mat-icon-button
-                (click)="masquerMdp = !masquerMdp">
-          <mat-icon>{{ masquerMdp ? 'visibility' : 'visibility_off' }}</mat-icon>
+<!-- telephone -->
+    <form [formGroup]="connexionForm" (ngSubmit)="seConnecter()">
+      <mat-card-content>
+        <mat-form-field appearance="outline">
+          <mat-label>Téléphone ou email</mat-label>
+          <input matInput formControlName="telephone" placeholder="+226 XX XX XX XX">
+          <mat-icon matPrefix>phone</mat-icon>
+          <mat-error *ngIf="connexionForm.get('telephone')?.hasError('required')">
+            Le téléphone est obligatoire
+          </mat-error>
+          <mat-error *ngIf="connexionForm.get('telephone')?.hasError('minlength')">
+            Minimum 8 caractères
+          </mat-error>
+        </mat-form-field>
+<!-- mot de passe -->
+        <mat-form-field appearance="outline">
+          <mat-label>Mot de passe</mat-label>
+          <input matInput formControlName="password"
+                 [type]="masquerMdp ? 'password' : 'text'">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button matSuffix mat-icon-button (click)="masquerMdp = !masquerMdp" type="button">
+            <mat-icon>{{ masquerMdp ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="connexionForm.get('password')?.hasError('required')">
+            Le mot de passe est obligatoire
+          </mat-error>
+          <mat-error *ngIf="connexionForm.get('password')?.hasError('minlength')">
+            Minimum 6 caractères
+          </mat-error>
+        </mat-form-field>
+<!-- bouton de connexion -->
+        <button mat-raised-button class="ana-btn-primary btn-full" type="submit"
+                [disabled]="connexionForm.invalid || chargement">
+          <mat-spinner *ngIf="chargement" diameter="20"></mat-spinner>
+          <span *ngIf="!chargement">Se connecter</span>
         </button>
-      </mat-form-field>
 
-      <!-- Bouton de connexion -->
-      <button mat-raised-button class="ana-btn-primary btn-full"
-              (click)="seConnecter()" [disabled]="chargement">
-        <mat-spinner *ngIf="chargement" diameter="20"></mat-spinner>
-        <span *ngIf="!chargement">Se connecter</span>
-      </button>
+        <mat-divider class="divider"></mat-divider>
 
-      <mat-divider class="divider"></mat-divider>
-
-      <p class="lien-inscription">
-        Pas encore de compte ?
-        <a routerLink="/inscription" mat-button color="primary">
-          S'inscrire gratuitement
-        </a>
-      </p>
-    </mat-card-content>
+        <p class="lien-inscription">
+          Pas encore de compte ?
+          <a routerLink="/inscription" mat-button color="primary">S'inscrire gratuitement</a>
+        </p>
+      </mat-card-content>
+    </form>
   </mat-card>
 </div>
