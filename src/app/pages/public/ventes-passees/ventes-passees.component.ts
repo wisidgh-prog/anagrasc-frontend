@@ -31,7 +31,7 @@ export class VentesPasseesComponent implements OnInit {
     this.chargement = true;
     this.api.getVentesPassees(this.filtres).subscribe({
       next: (res) => {
-        this.ventes = res.data.data ?? [];
+        this.ventes = res.data;
         this.meta = res.data; // contient current_page, last_page...
         this.chargement = false;
       },

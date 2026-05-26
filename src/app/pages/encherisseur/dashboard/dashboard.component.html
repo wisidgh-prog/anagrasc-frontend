@@ -1,7 +1,7 @@
 <div class="page-container">
   <h2 class="page-title">
     Bonjour, {{ utilisateur?.nom_complet }}
-    <span class="bienvenue-icon">👋</span>
+    <span class="bienvenue-icon"></span>
   </h2>
 
   <!-- Statistiques wallet -->
@@ -34,12 +34,12 @@
   <!-- Actions rapides -->
   <div class="actions-rapides">
     <a mat-raised-button class="ana-btn-accent" routerLink="/mon-espace/wallet">
-      <mat-icon>add</mat-icon> Recharger mon wallet
+      <mat-icon>add</mat-icon> Recharger mon portefeuille
     </a>
-    <a mat-stroked-button routerLink="/catalogue">
+    <a mat-raised-button class="ana-btn-accent" routerLink="/catalogue">
       <mat-icon>gavel</mat-icon> Voir les enchères
     </a>
-    <a mat-stroked-button routerLink="/mon-espace/participations">
+    <a mat-raised-button class="ana-btn-accent" routerLink="/mon-espace/participations">
       <mat-icon>history</mat-icon> Mon historique
     </a>
   </div>

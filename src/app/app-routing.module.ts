@@ -23,7 +23,7 @@ import { UtilisateursComponent } from './pages/admin/utilisateurs/utilisateurs.c
 import { LogsComponent }         from './pages/admin/logs/logs.component';
 import { ConfigurationComponent }from './pages/admin/configuration/configuration.component';
 import { RolesComponent } from './pages/admin/roles/roles.component';
-
+import { DetailBienComponent } from './pages/public/detail-bien/detail-bien.component';
 const routes: Routes = [
   { path: '',                  component: AccueilComponent },
   { path: 'catalogue',         component: CatalogueComponent },
@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: 'connexion',         component: ConnexionComponent },
   { path: 'inscription',       component: InscriptionComponent },
   { path: 'conditions',        component: ConditionsComponent },
-
+  { path: 'biens/:id', component: DetailBienComponent },
   // Enchérisseur
   { path: 'mon-espace', canActivate: [authGuard, roleGuard],
     data: { roles: ['encherisseur'] },

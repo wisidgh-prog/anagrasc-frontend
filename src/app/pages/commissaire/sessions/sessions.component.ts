@@ -38,7 +38,7 @@ export class SessionsComponent implements OnInit {
   ngOnInit(): void {
     this.chargerSessions();
     this.api.getMesBiens({ statut: 'publie' }).subscribe({
-      next: res => (this.biensPublies = res.data.data ?? [])
+      next: res => (this.biensPublies = res.data)
     });
     // this.api.getSuperviseurs().subscribe({
     //   next: res => (this.superviseurs = res.data)
@@ -49,16 +49,20 @@ export class SessionsComponent implements OnInit {
     this.chargement = true;
     this.api.getMesSessions('commissaire_priseur').subscribe({
       next: res => {
-        this.sessions = res.data.data ?? [];
+        this.sessions = res.data ;
         this.chargement = false;
       },
       error: () => { this.chargement = false; }
     });
     this.api.getMesBiens({ statut: 'publie' }).subscribe({
-      next: res => (this.biensPublies = res.data.data ?? [])
+      next: res => (this.biensPublies = res.data )
+
     });
     this.api.getSuperviseurs().subscribe({
-      next: res => (this.superviseurs = res.data )
+      next: res => {(this.superviseurs = res.data )
+        this.chargement = false;
+      }
+
     });
   }
 

@@ -23,7 +23,7 @@ export class CatalogueComponent implements OnInit {
   this.chargement = true;
   this.api.getBiens(this.filtres).subscribe({
     next: (res) => {
-      this.biens = res.data?.data ?? [];   // extrait le tableau paginé
+      this.biens = res.data;   // extrait le tableau paginé
       this.chargement = false;
     },
     error: () => { this.chargement = false; }

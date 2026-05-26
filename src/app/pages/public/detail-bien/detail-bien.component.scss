@@ -4,12 +4,105 @@
   padding: 24px 16px;
 }
 
-.breadcrumb {
-  background: none;
-  padding: 0;
-  margin: 0;
+.breadcrumb-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 14px;
+  margin-bottom: 16px;
 
-  a { color: var(--primary); text-decoration: none; }
-  .active { color: var(--text-muted); }
+  .breadcrumb-link    { color: var(--primary); text-decoration: none; }
+  .breadcrumb-current { color: var(--text-muted); }
+  .breadcrumb-sep     { font-size: 18px; color: var(--text-muted); }
+}
+
+.photo-card {
+  border-radius: var(--radius) !important;
+  overflow: hidden;
+
+  img[mat-card-image] { height: 320px; object-fit: cover; }
+  .no-photo {
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    mat-icon { font-size: 64px; color: #bdbdbd; }
+  }
+}
+
+.miniatures {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px;
+  img {
+    height: 60px;
+    width: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    &.active { border-color: var(--primary); }
+  }
+}
+
+.info-card {
+  border-radius: var(--radius) !important;
+  padding: 20px;
+}
+
+.bien-titre { font-size: 22px; font-weight: 700; margin: 8px 0 4px; color: var(--primary); }
+
+.session-details {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  .row { margin-bottom: 4px; }
+}
+
+.info-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+.btn-full { width: 100%; }
+
+.info-message {
+  margin-top: 8px;
+  padding: 12px;
+  background: #e3f2fd;
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: #1565c0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  mat-icon { font-size: 20px; }
+}
+
+.desc-card {
+  margin-top: 24px;
+  border-radius: var(--radius) !important;
+  padding: 20px;
+}
+
+.remarques-box {
+  margin-top: 20px;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: var(--radius);
+  font-size: 13px;
+}
+
+.center-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
 }

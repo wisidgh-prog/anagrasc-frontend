@@ -16,14 +16,14 @@ export class AccueilComponent implements OnInit {
   ngOnInit(): void {
     this.api.getBiens({ statut: 'en_cours' }).subscribe({
       next: (res) => {
-        this.sessionsEnCours = res.data.data ?? [];
+        this.sessionsEnCours = res.data;
         this.chargement = false;
       },
       error: () => (this.chargement = false)
     });
     this.api.getBiens({ statut: 'publie' }).subscribe({
       next: (res) => {
-        this.sessionsAVenir = (res.data.data ?? []).slice(0, 4);
+        this.sessionsAVenir = (res.data).slice(0, 4);
       }
     });
   }

@@ -39,14 +39,16 @@
           <div class="col-md-6">
             <mat-form-field appearance="outline">
               <mat-label>Date et heure de début </mat-label>
-              <input matInput type="datetime-local" formControlName="date_debut">
+              <input matInput type="date" formControlName="date_debut">
+                 <!-- <input matInput type="datetime-local"> -->
               <mat-error *ngIf="sessionForm.get('date_debut')?.hasError('required')">Date obligatoire</mat-error>
             </mat-form-field>
           </div>
           <div class="col-md-6">
             <mat-form-field appearance="outline">
               <mat-label>Date et heure de fin </mat-label>
-              <input matInput type="datetime-local" formControlName="date_fin">
+              <input matInput type="date" formControlName="date_fin">
+                 <!-- <input matInput type="datetime-local" > -->
               <mat-error *ngIf="sessionForm.get('date_fin')?.hasError('required')">Date obligatoire</mat-error>
             </mat-form-field>
           </div>
@@ -80,7 +82,7 @@
         </mat-card-actions>
       </form>
     </mat-card-content>
-   
+
   </mat-card>
 
   <!-- Tableau des sessions -->

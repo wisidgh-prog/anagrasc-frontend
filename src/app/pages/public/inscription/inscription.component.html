@@ -130,7 +130,7 @@
           </mat-form-field>
         </div>
         <mat-form-field appearance="outline">
-          <mat-label>Fonction *</mat-label>
+          <mat-label>Fonction </mat-label>
           <input matInput formControlName="representant_legal_fonction" placeholder="Directeur Général">
           <mat-error *ngIf="moraleGroup.get('representant_legal_fonction')?.hasError('required')">Fonction requise</mat-error>
         </mat-form-field>
@@ -195,9 +195,16 @@
                 <span *ngIf="pieceRectoFichier" class="fichier-nom">{{ pieceRectoFichier.name }}</span>
               </div>
 
+              <div class="upload-zone">
+                <mat-icon>upload_file</mat-icon>
+                <span>Photo verso de la pièce (PNG, JPG, PDF — max 5 Mo)</span>
+                <input type="file" accept=".jpg,.jpeg,.png,.pdf" (change)="onFichierVerso($event)">
+                <span *ngIf="pieceVersoFichier" class="fichier-nom">{{ pieceVersoFichier.name }}</span>
+              </div>
+
               <mat-form-field appearance="outline">
                 <mat-label>Mot de passe </mat-label>
-                <input matInput formControlName="password"
+                <input matInput type="password" formControlName="password"
                        [type]="masquerMdp ? 'password' : 'text'"
                        placeholder="Minimum 8 caractères">
                 <button matSuffix mat-icon-button (click)="masquerMdp = !masquerMdp" type="button">

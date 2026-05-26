@@ -50,9 +50,7 @@ export class ApiService {
     const r = role === 'superviseur' ? 'superviseur/sessions' : 'commissaire/sessions';
     return this.http.get(`${this.url}/${r}`);
   }
-  getSuperviseurs(): Observable<any>                 { return this.http.get(`${this.url}/superviseurs`);
-}
-
+  getSuperviseurs(): Observable<any>                 { return this.http.get(`${this.url}/superviseurs`);}
   creerSession(d: any): Observable<any>              { return this.http.post(`${this.url}/sessions`, d); }
   modifierSession(id: number, d: any): Observable<any> { return this.http.put(`${this.url}/sessions/${id}`, d); }
   superviserSession(id: number): Observable<any>     { return this.http.get(`${this.url}/superviseur/sessions/${id}`); }

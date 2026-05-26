@@ -46,7 +46,7 @@ export class BiensComponent implements OnInit {
     this.chargement = true;
     this.api.getMesBiens({ statut: this.filtreStatut }).subscribe({
       next: res => {
-        this.biens = res.data.data ?? [];
+        this.biens = res.data ;
         this.chargement = false;
       },
       error: () => { this.chargement = false; }

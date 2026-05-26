@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Détails de l'utilisateur</h2>
+<mat-dialog-content>
+  <div class="detail-row"><strong>Nom complet :</strong> {{ user.nom_complet }}</div>
+  <div class="detail-row"><strong>Téléphone :</strong> {{ user.telephone }}</div>
+  <div class="detail-row"><strong>Email :</strong> {{ user.email || '—' }}</div>
+  <div class="detail-row"><strong>Ville :</strong> {{ user.ville || '—' }}</div>
+  <div class="detail-row"><strong>Type :</strong> {{ user.type_personne || '—' }}</div>
+  <div class="detail-row"><strong>Rôle :</strong> {{ user.role?.nom }}</div>
+  <div class="detail-row"><strong>Statut :</strong>
+    {{ user.est_suspendu ? 'Suspendu' : user.est_valide ? 'Validé' : 'En attente' }}
+  </div>
+  <div class="detail-row" *ngIf="user.type_piece">
+    <strong>Pièce d'identité :</strong> {{ user.type_piece }} ({{ user.num_piece }})
+  </div>
+
+  <!-- Boutons pour voir les pièces -->
+  <div class="piece-actions" *ngIf="user.piece_recto_url || user.piece_verso_url">
+    <a [href]="'http://localhost:8000/api/admin/utilisateurs/' + user.id + '/piece/recto'"
+       target="_blank" mat-button color="primary" *ngIf="user.piece_recto_url">
+      Voir pièce recto
+    </a>
+    <a [href]="'http://localhost:8000/api/admin/utilisateurs/' + user.id + '/piece/verso'"
+       target="_blank" mat-button color="primary" *ngIf="user.piece_verso_url">
+      Voir pièce verso
+    </a>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Fermer</button>
+</mat-dialog-actions>

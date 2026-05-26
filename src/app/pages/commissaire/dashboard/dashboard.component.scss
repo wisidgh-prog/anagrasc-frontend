@@ -11,3 +11,27 @@
 .p-0 { padding: 0 !important; }
 .fw-semibold { font-weight: 600; }
 .muted { color: var(--text-muted); }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  border-radius: var(--radius) !important;
+  mat-card-content {
+    text-align: center;
+    padding: 20px !important;
+  }
+  &--success { border-top: 3px solid var(--success); }
+  &--warning { border-top: 3px solid var(--warning); }
+  &--danger  { border-top: 3px solid var(--danger); }
+}
+
+.stat-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+}

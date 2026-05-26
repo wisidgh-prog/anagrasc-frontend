@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>Créer un compte interne</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Rôle</mat-label>
+      <mat-select formControlName="role">
+        <mat-option *ngFor="let r of rolesDisponibles" [value]="r.valeur">{{ r.libelle }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('role')?.hasError('required')">Rôle requis</mat-error>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="nom">
+        <mat-error *ngIf="form.get('nom')?.hasError('required')">Nom requis</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="prenom">
+        <mat-error *ngIf="form.get('prenom')?.hasError('required')">Prénom requis</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Téléphone</mat-label>
+      <input matInput formControlName="telephone" placeholder=" XX XX XX XX">
+      <mat-error *ngIf="form.get('telephone')?.hasError('required')">Téléphone requis</mat-error>
+      <mat-error *ngIf="form.get('telephone')?.hasError('pattern')">Format invalide (+226XXXXXXXX)</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email">
+      <mat-error *ngIf="form.get('email')?.hasError('email')">Email invalide</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput type="password" formControlName="password"
+       [type]="masquerMdp ? 'password' : 'text'">
+      <button matSuffix mat-icon-button (click)="masquerMdp = !masquerMdp" type="button">
+                  <mat-icon>{{ masquerMdp ? 'visibility' : 'visibility_off' }}</mat-icon>
+                </button>
+      <mat-error *ngIf="form.get('password')?.hasError('required')">Mot de passe requis</mat-error>
+      <mat-error *ngIf="form.get('password')?.hasError('minlength')">Min. 8 caractères</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Confirmer le mot de passe</mat-label>
+      <input matInput type="password" formControlName="password_confirmation"
+            [type]="masquerMdp ? 'password' : 'text'">
+        <button matSuffix mat-icon-button (click)="masquerMdp = !masquerMdp" type="button">
+                  <mat-icon>{{ masquerMdp ? 'visibility' : 'visibility_off' }}</mat-icon>
+                </button>
+      <mat-error *ngIf="form.get('password_confirmation')?.hasError('required')">Confirmation requise</mat-error>
+      <mat-error *ngIf="form.hasError('mismatch') && form.get('password_confirmation')?.touched">
+        Les mots de passe ne correspondent pas
+      </mat-error>
+    </mat-form-field>
+  </form>
+  <div *ngIf="erreur" class="alert alert-danger small mt-2">{{ erreur }}</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="fermer()">Annuler</button>
+  <button mat-raised-button class="ana-btn-primary" (click)="creer()" [disabled]="form.invalid || chargement">
+    <mat-spinner *ngIf="chargement" diameter="18"></mat-spinner>
+    <span *ngIf="!chargement">Créer</span>
+  </button>
+</mat-dialog-actions>

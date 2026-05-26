@@ -36,6 +36,8 @@ import { SidebarCommissaireComponent } from './shared/sidebar-commissaire/sideba
 import { SidebarSuperviseurComponent } from './shared/sidebar-superviseur/sidebar-superviseur.component';
 import { SidebarAdminComponent } from './shared/sidebar-admin/sidebar-admin.component';
 import { RolesComponent } from './pages/admin/roles/roles.component';
+import { CreateInternalUserDialogComponent } from './pages/admin/utilisateurs/create-internal-user-dialog/create-internal-user-dialog.component';
+import { UserDetailsDialogComponent } from './pages/admin/utilisateurs/user-details-dialog/user-details-dialog.component';
 
 @NgModule({
    declarations: [
@@ -65,7 +67,9 @@ import { RolesComponent } from './pages/admin/roles/roles.component';
      SidebarCommissaireComponent,
      SidebarSuperviseurComponent,
      TimerComponent,
-     RolesComponent
+     RolesComponent,
+     CreateInternalUserDialogComponent,
+     UserDetailsDialogComponent
    ],
    imports: [
      BrowserModule,

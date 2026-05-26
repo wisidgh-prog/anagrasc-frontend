@@ -23,7 +23,7 @@ export class IncidentsComponent implements OnInit {
   ngOnInit(): void {
     this.api.getIncidents().subscribe({
       next: res => {
-        this.incidents = res.data.data ?? [];
+        this.incidents = res.data;
         this.chargement = false;
       },
       error: () => { this.chargement = false; }

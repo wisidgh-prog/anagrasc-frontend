@@ -5,6 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../../../core/services/api.service';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateInternalUserDialogComponent } from './create-internal-user-dialog/create-internal-user-dialog.component';
+import { UserDetailsDialogComponent } from './user-details-dialog/user-details-dialog.component';
+
 @Component({
   selector: 'app-utilisateurs',
   templateUrl: './utilisateurs.component.html',
@@ -13,12 +17,16 @@ import { MatSelectModule } from '@angular/material/select';
 export class UtilisateursComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   colonnes = ['nom', 'telephone', 'type', 'role', 'statut', 'actions'];
-  filtres = { est_valide: '', role: '', search: '' };
+  filtres = { est_valide: '', role: '', search: '', suspendu: '' };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-
-  constructor(private api: ApiService, private snack: MatSnackBar) {}
+//constructeur
+  constructor(
+    private api: ApiService,
+    private snack: MatSnackBar,
+    private dialog:MatDialog
+    ) {}
 
   ngOnInit(): void { this.charger(); }
 
@@ -45,7 +53,7 @@ export class UtilisateursComponent implements OnInit {
       error: e => this.snack.open(e.error?.message ?? 'Erreur', 'Fermer', { duration: 13000, panelClass: 'snack-error' })
     });
   }
-//rejeter 
+//rejeter
   rejeter(id: number): void {
     const motif = prompt('Motif du rejet :');
     if (!motif) return;
@@ -57,7 +65,7 @@ export class UtilisateursComponent implements OnInit {
       error: e => this.snack.open(e.error?.message ?? 'Erreur', 'Fermer', { duration: 3000, panelClass: 'snack-error' })
     });
   }
-
+//suspendre
   suspendre(id: number): void {
     const motif = prompt('Motif de la suspension :');
     if (!motif) return;
@@ -69,4 +77,16 @@ export class UtilisateursComponent implements OnInit {
       error: e => this.snack.open(e.error?.message ?? 'Erreur', 'Fermer', { duration: 3000, panelClass: 'snack-error' })
     });
   }
+//ouvrir le dialogue de création
+ouvrirCreationInterne(): void {
+  const dialogRef = this.dialog.open(CreateInternalUserDialogComponent, {
+    width: '500px'
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result) {
+      this.snack.open('Compte interne créé avec succès.', 'Fermer', { duration: 3000, panelClass: 'snack-success' });
+      this.charger();
+    }
+  });
+}
 }

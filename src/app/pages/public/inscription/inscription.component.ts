@@ -22,6 +22,7 @@ export class InscriptionComponent {
   succes = '';
   masquerMdp = true;
   pieceRectoFichier: File | null = null;
+  pieceVersoFichier: File | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -90,6 +91,11 @@ export class InscriptionComponent {
 
   onFichierRecto(e: any): void {
     this.pieceRectoFichier = e.target.files[0];
+
+  }
+
+  onFichierVerso(e: any): void {
+    this.pieceVersoFichier = e.target.files[0];
   }
 
   soumettre(): void {
@@ -122,6 +128,10 @@ export class InscriptionComponent {
 
     if (this.pieceRectoFichier) {
       fd.append('piece_recto', this.pieceRectoFichier);
+    }
+
+    if (this.pieceVersoFichier) {
+      fd.append('piece_verso', this.pieceVersoFichier);
     }
 
     this.api.inscrire(fd).subscribe({
