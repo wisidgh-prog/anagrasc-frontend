@@ -32,12 +32,11 @@ import { UtilisateursComponent } from './pages/admin/utilisateurs/utilisateurs.c
 import { LogsComponent }     from './pages/admin/logs/logs.component';
 import { ConfigurationComponent } from './pages/admin/configuration/configuration.component';
 import{TimerComponent} from './shared/timer/timer.component';
-import { SidebarCommissaireComponent } from './shared/sidebar-commissaire/sidebar-commissaire.component';
-import { SidebarSuperviseurComponent } from './shared/sidebar-superviseur/sidebar-superviseur.component';
-import { SidebarAdminComponent } from './shared/sidebar-admin/sidebar-admin.component';
 import { RolesComponent } from './pages/admin/roles/roles.component';
 import { CreateInternalUserDialogComponent } from './pages/admin/utilisateurs/create-internal-user-dialog/create-internal-user-dialog.component';
 import { UserDetailsDialogComponent } from './pages/admin/utilisateurs/user-details-dialog/user-details-dialog.component';
+import { GestionBiensComponent } from './pages/admin/Gestion-biens/gestion-biens/gestion-biens.component';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
 
 @NgModule({
    declarations: [
@@ -63,13 +62,12 @@ import { UserDetailsDialogComponent } from './pages/admin/utilisateurs/user-deta
       UtilisateursComponent,
        LogsComponent,
      ConfigurationComponent,
-     SidebarAdminComponent,
-     SidebarCommissaireComponent,
-     SidebarSuperviseurComponent,
      TimerComponent,
      RolesComponent,
      CreateInternalUserDialogComponent,
-     UserDetailsDialogComponent
+     UserDetailsDialogComponent,
+     GestionBiensComponent,
+     SidebarComponent
    ],
    imports: [
      BrowserModule,

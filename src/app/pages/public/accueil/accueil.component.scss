@@ -1,5 +1,5 @@
 .hero-section {
-  background: linear-gradient(135deg, var(--primary) 0%, #1a4a70 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #dd311e 100%);
   min-height: 420px;
   display: flex;
   align-items: center;
@@ -47,9 +47,26 @@
   .status-badge { position: absolute; top: 10px; left: 10px; }
 }
 
-.categorie-chip { margin-bottom: 8px; }
-.bien-titre { font-size: 1rem; font-weight: 600; margin: 0 0 4px; color: var(--primary); }
-.bien-lieu { display: flex; align-items: center; gap: 4px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; }
+.categorie-chip
+ {
+  margin-bottom: 8px;
+ }
+.bien-titre
+{
+  font-size: 1rem;
+   font-weight: 600;
+   margin: 0 0 4px;
+   color: var(--primary);
+   }
+.bien-lieu
+ { display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+   color: var(--text-muted);
+   margin-bottom: 12px;
+   mat-icon { font-size: 14px; width: 14px; height: 14px; }
+   }
 .bien-prix-container { .label-muted { font-size: 0.7rem; } .prix { font-size: 1.1rem; font-weight: 700; color: var(--primary); display: block; } }
 
 .prochaines-grid {

@@ -15,13 +15,18 @@
   gap: 20px;
   align-items: start;
    overflow: visible;
+    @media (max-width: 992px) {
+    grid-template-columns: 1fr; // les filtres passent au-dessus
+  }
 }
 
 .filtres-panel {
   align-self: start;
   // mat-card { padding: 4px; }
   overflow: visible;
-
+@media (max-width: 992px) {
+    position: static; // plus de sticky sur tablette
+  }
 }
 
 .biens-grid {

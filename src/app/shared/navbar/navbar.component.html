@@ -9,7 +9,7 @@
   <span class="spacer"></span>
 
   <!-- Liens publics : visibles uniquement pour les visiteurs et les enchérisseurs -->
-   
+
   <ng-container *ngIf="!estConnecte || role === 'encherisseur'">
      <button mat-button routerLink="/acceuil" routerLinkActive="active">
        Accueil
@@ -25,7 +25,7 @@
     </button>
   </ng-container>
 
-  <!-- Liens enchérisseur (uniquement si connecté en tant qu'enchérisseur) -->
+  <!-- Liens enchérisseur (uniquement si connecté en tant qu'enchérisseur)
   <ng-container *ngIf="role === 'encherisseur'">
     <button mat-button routerLink="/mon-espace" routerLinkActive="active">
       <mat-icon>person</mat-icon> Mon espace
@@ -33,7 +33,7 @@
     <button mat-button routerLink="/mon-espace/wallet" routerLinkActive="active">
       <mat-icon>account_balance_wallet</mat-icon> Mon portefeuille
     </button>
-  </ng-container>
+  </ng-container> -->
 
   <!-- Boutons droite -->
   <ng-container *ngIf="estConnecte; else nonConnecte">

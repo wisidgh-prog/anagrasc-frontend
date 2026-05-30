@@ -24,6 +24,7 @@ import { LogsComponent }         from './pages/admin/logs/logs.component';
 import { ConfigurationComponent }from './pages/admin/configuration/configuration.component';
 import { RolesComponent } from './pages/admin/roles/roles.component';
 import { DetailBienComponent } from './pages/public/detail-bien/detail-bien.component';
+import { GestionBiensComponent } from './pages/admin/Gestion-biens/gestion-biens/gestion-biens.component';
 const routes: Routes = [
   { path: '',                  component: AccueilComponent },
   { path: 'catalogue',         component: CatalogueComponent },
@@ -68,7 +69,8 @@ const routes: Routes = [
       { path: 'utilisateurs',  component: UtilisateursComponent },
       { path: 'logs',          component: LogsComponent },
       { path: 'configuration', component: ConfigurationComponent },
-      { path: 'roles', component: RolesComponent }
+      { path: 'roles', component: RolesComponent },
+      { path: 'gestion-biens', component: GestionBiensComponent }
     ]},
 
   { path: '**', redirectTo: '' },

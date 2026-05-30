@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-biens',
@@ -24,7 +25,8 @@ export class BiensComponent implements OnInit {
   constructor(
     private api: ApiService,
     private auth: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snack: MatSnackBar,
   ) {
     this.bienForm = this.fb.group({
       categorie_id: ['', Validators.required],
@@ -89,6 +91,10 @@ export class BiensComponent implements OnInit {
     this.erreur = '';
     this.message = '';
     const fd = new FormData();
+    if (!this.bienForm.value.categorie_id) {
+  this.erreur = 'Veuillez sélectionner une catégorie.';
+  return;
+}
     Object.keys(this.bienForm.value).forEach(k => fd.append(k, this.bienForm.value[k]));
     this.photosFichiers.forEach(f => fd.append('photos[]', f));
 
@@ -104,7 +110,7 @@ export class BiensComponent implements OnInit {
     } else {
       this.api.modifierBien(this.bienSelectionne.id, this.bienForm.value).subscribe({
         next: res => {
-          this.message = res.message;
+          this.snack.open(res.message, 'Fermer', { duration: 13000 });
           this.modeFormulaire = null;
           this.charger();
         },
@@ -125,7 +131,15 @@ export class BiensComponent implements OnInit {
   }
 
   libelleStatut(s: string): string {
-    const l: any = { publie: 'Publié', en_cours: 'En cours', vendu: 'Vendu', annule: 'Annulé' };
+    const l: any = {
+      en_attente_validation: 'En attente de validation',
+       publie: 'Publié',
+       en_cours: 'En cours',
+       vendu: 'Vendu',
+       annule: 'Annulé',
+       rejete: 'Rejeté',
+      };
+
     return l[s] ?? s;
   }
 

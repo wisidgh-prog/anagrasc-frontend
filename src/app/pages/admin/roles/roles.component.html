@@ -1,0 +1,64 @@
+<div class="page-container">
+  <h2>Gestion des rôles</h2>
+
+  <div class="actions-row">
+    <button mat-raised-button color="primary" (click)="ouvrirAjout()">
+      <mat-icon>add</mat-icon> Nouveau rôle
+    </button>
+  </div>
+
+  <!-- Formulaire d'ajout/modification-->
+  <mat-card *ngIf="roleSelectionne !==  modeModification" class="form-card">
+    <mat-card-title>{{ modeModification ? 'Modifier le rôle' : 'Nouveau rôle' }}</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="roleForm" (ngSubmit)="soumettre()">
+        <mat-form-field appearance="outline">
+          <mat-label>Nom du rôle</mat-label>
+          <input matInput formControlName="nom" placeholder="ex: auditeur">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description">
+        </mat-form-field>
+        <mat-checkbox formControlName="est_actif">Actif</mat-checkbox>
+        <div class="d-flex gap-2 mt-3">
+          <button mat-raised-button color="primary" type="submit">Enregistrer</button>
+          <button mat-button (click)="annuler()">Annuler</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tableau des rôles -->
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="roles">
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef>Nom</th>
+          <td mat-cell *matCellDef="let r">{{ r.nom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let r">{{ r.description || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="est_actif">
+          <th mat-header-cell *matHeaderCellDef>Actif</th>
+          <td mat-cell *matCellDef="let r">{{ r.est_actif ? 'Oui' : 'Non' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let r">
+            <button mat-icon-button (click)="ouvrirModification(r)" matTooltip="Modifier">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="supprimer(r.id)" matTooltip="Supprimer">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['nom','description','est_actif','actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['nom','description','est_actif','actions'];"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

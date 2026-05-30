@@ -1,10 +1,10 @@
-<div class="p-4">
+<div class="dashboard-container">
 
   <!-- En-tête -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="dashboard-header">
     <div>
-      <h4 class="fw-bold mb-0" style="color:#0d2d4a;">Tableau de bord</h4>
-      <small class="text-muted">Commissaire-priseur – ANAGRASC</small>
+      <h4 class="dashboard-title">Tableau de bord</h4>
+      <span class="dashboard-subtitle">Commissaire-priseur – ANAGRASC</span>
     </div>
     <a mat-raised-button class="ana-btn-accent" routerLink="/commissaire/biens">
       <mat-icon>add</mat-icon> Nouveau bien
@@ -12,114 +12,125 @@
   </div>
 
   <!-- Message d'erreur -->
-  <div *ngIf="erreur" class="alert alert-danger">{{ erreur }}</div>
+  <div *ngIf="erreur" class="error-message">{{ erreur }}</div>
 
-  <!-- Spinner de chargement -->
+  <!-- Spinner -->
   <div *ngIf="chargement" class="center-spinner">
     <mat-spinner diameter="48" color="primary"></mat-spinner>
   </div>
 
-  <!-- Contenu principal (une fois les stats chargées) -->
+  <!-- Contenu principal -->
   <div *ngIf="!chargement && stats">
 
-    <!-- Métriques -->
-    <div class="row g-3 mb-4">
-      <div class="col-6 col-xl-3" *ngFor="let m of [
-        {label:'Biens publiés', value:stats.biens_publies, color:'var(--primary)'},
-        {label:'Sessions en cours', value:stats.sessions_en_cours, color:'#2e7d32'},
-        {label:'Sessions à venir', value:stats.sessions_a_venir, color:'#f57f17'},
-        {label:'Incidents ouverts', value:stats.incidents_ouverts, color: stats.incidents_ouverts > 0 ? '#c62828' : '#2e7d32'}
-      ]">
-        <mat-card class="stat-card" [style.border-top-color]="m.color">
-          <mat-card-content>
-            <div class="small text-muted">{{ m.label }}</div>
-            <div class="fs-3 fw-bold" [style.color]="m.color">{{ m.value }}</div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+    <!-- Métriques (4 cartes) -->
+    <div class="metrics-row">
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-label">Biens publiés</div>
+          <div class="stat-value" style="color: var(--primary);">{{ stats.biens_publies || 0 }}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-label">Sessions en cours</div>
+          <div class="stat-value" style="color: var(--success);">{{ stats.sessions_en_cours || 0 }}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-label">Sessions à venir</div>
+          <div class="stat-value" style="color: #f57f17;">{{ stats.sessions_a_venir || 0 }}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-content>
+          <div class="stat-label">Incidents ouverts</div>
+          <div class="stat-value"
+               [style.color]="(stats.incidents_ouverts || 0) > 0 ? 'var(--danger)' : 'var(--success)'">
+            {{ stats.incidents_ouverts || 0 }}
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-    <!-- Alerte si session en cours -->
-    <div *ngIf="stats.sessions_en_cours > 0" class="alert d-flex align-items-center gap-2 mb-4"
-         style="background:#EAF3DE; border-color:#C0DD97; color:#27500A;">
+    <!-- Alerte session en cours -->
+    <div *ngIf="stats.sessions_en_cours > 0" class="info-alert">
       <mat-icon>sensors</mat-icon>
       <div>
         <strong>Enchère en cours !</strong> {{ stats.sessions_en_cours }} session(s) active(s).
-        <a routerLink="/commissaire/sessions" style="color:#27500A; font-weight:600;">Superviser →</a>
+        <a routerLink="/commissaire/sessions">Superviser →</a>
       </div>
     </div>
 
     <!-- Deux colonnes : Biens récents et Sessions récentes -->
-    <div class="row g-4">
+    <div class="two-columns">
       <!-- Biens récents -->
-      <div class="col-md-7">
-        <mat-card class="table-card">
-          <mat-card-header>
-            <mat-card-title>Mes biens récents</mat-card-title>
-            <a mat-button routerLink="/commissaire/biens">Voir tout</a>
-          </mat-card-header>
-          <mat-card-content class="p-0">
-            <table mat-table [dataSource]="biens" class="w-full">
-              <ng-container matColumnDef="titre">
-                <th mat-header-cell *matHeaderCellDef>Titre</th>
-                <td mat-cell *matCellDef="let b" class="fw-semibold">{{ b.titre }}</td>
-              </ng-container>
-              <ng-container matColumnDef="mise_a_prix">
-                <th mat-header-cell *matHeaderCellDef>Mise à prix</th>
-                <td mat-cell *matCellDef="let b">{{ formatFCFA(b.mise_a_prix) }}</td>
-              </ng-container>
-              <ng-container matColumnDef="statut">
-                <th mat-header-cell *matHeaderCellDef>Statut</th>
-                <td mat-cell *matCellDef="let b">
-                  <span class="ana-badge"
-                        [class.ana-badge--live]="b.statut==='en_cours'"
-                        [class.ana-badge--soon]="b.statut==='publie'"
-                        [class.ana-badge--done]="b.statut==='vendu'"
-                        [class.ana-badge--danger]="b.statut==='annule'">
-                    {{ b.statut }}
-                  </span>
-                </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="['titre','mise_a_prix','statut']"></tr>
-              <tr mat-row *matRowDef="let row; columns: ['titre','mise_a_prix','statut'];"></tr>
-            </table>
-            <div *ngIf="biens.length === 0" class="text-center muted py-3">Aucun bien.</div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+      <mat-card class="table-card">
+        <mat-card-header>
+          <mat-card-title>Mes biens récents</mat-card-title>
+          <a mat-button routerLink="/commissaire/biens">Voir tout</a>
+        </mat-card-header>
+        <mat-card-content class="table-content">
+          <table mat-table [dataSource]="biens" class="full-width-table">
+            <ng-container matColumnDef="titre">
+              <th mat-header-cell *matHeaderCellDef>Titre</th>
+              <td mat-cell *matCellDef="let b">{{ b.titre }}</td>
+            </ng-container>
+            <ng-container matColumnDef="mise_a_prix">
+              <th mat-header-cell *matHeaderCellDef>Mise à prix</th>
+              <td mat-cell *matCellDef="let b">{{ formatFCFA(b.mise_a_prix) }}</td>
+            </ng-container>
+            <ng-container matColumnDef="statut">
+              <th mat-header-cell *matHeaderCellDef>Statut</th>
+              <td mat-cell *matCellDef="let b">
+                <span class="ana-badge"
+                      [class.ana-badge--waiting]="b.statut==='en_attente_validation'"
+                      [class.ana-badge--soon]="b.statut==='publie'"
+                      [class.ana-badge--live]="b.statut==='en_cours'"
+                      [class.ana-badge--done]="b.statut==='vendu'"
+                      [class.ana-badge--danger]="b.statut==='annule'">
+                  {{ b.statut }}
+                </span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['titre','mise_a_prix','statut']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['titre','mise_a_prix','statut'];"></tr>
+          </table>
+          <div *ngIf="biens.length === 0" class="empty-message">Aucun bien.</div>
+        </mat-card-content>
+      </mat-card>
 
       <!-- Sessions récentes -->
-      <div class="col-md-5">
-        <mat-card class="table-card">
-          <mat-card-header>
-            <mat-card-title>Dernières sessions</mat-card-title>
-            <a mat-button routerLink="/commissaire/sessions">Voir tout</a>
-          </mat-card-header>
-          <mat-card-content class="p-0">
-            <div *ngFor="let s of sessions" class="border-bottom p-3 small">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="fw-semibold">{{ s.bien?.titre }}</div>
-                  <div class="text-muted">{{ s.date_debut | date:'dd/MM/yyyy HH:mm' }}</div>
-                </div>
-                <span class="ana-badge"
-                      [class.ana-badge--live]="s.statut==='en_cours'"
-                      [class.ana-badge--soon]="s.statut==='a_venir'"
-                      [class.ana-badge--done]="s.statut==='terminee'"
-                      [class.ana-badge--danger]="s.statut==='interrompue'">
-                  {{ s.statut }}
-                </span>
-              </div>
-              <a *ngIf="s.statut === 'en_cours'"
-                 [routerLink]="['/encheres', s.id, 'live']"
-                 mat-button color="primary" class="mt-1">
-                Superviser l'enchère →
-              </a>
+      <mat-card class="table-card">
+        <mat-card-header>
+          <mat-card-title>Dernières sessions</mat-card-title>
+          <a mat-button routerLink="/commissaire/sessions">Voir tout</a>
+        </mat-card-header>
+        <mat-card-content class="table-content">
+          <div *ngFor="let s of sessions" class="session-row">
+            <div class="session-info">
+              <div class="session-title">{{ s.bien?.titre }}</div>
+              <div class="session-date">{{ s.date_debut | date:'dd/MM/yyyy HH:mm' }}</div>
             </div>
-            <div *ngIf="sessions.length === 0" class="text-center muted py-3">Aucune session.</div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+            <span class="ana-badge"
+                  [class.ana-badge--live]="s.statut==='en_cours'"
+                  [class.ana-badge--soon]="s.statut==='a_venir'"
+                  [class.ana-badge--done]="s.statut==='terminee'"
+                  [class.ana-badge--danger]="s.statut==='interrompue'">
+              {{ s.statut }}
+            </span>
+            <a *ngIf="s.statut === 'en_cours'"
+               [routerLink]="['/encheres', s.id, 'live']"
+               mat-button color="primary" class="supervise-link">
+              Superviser l'enchère →
+            </a>
+          </div>
+          <div *ngIf="sessions.length === 0" class="empty-message">Aucune session.</div>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
 </div>

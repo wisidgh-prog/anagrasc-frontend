@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -9,67 +10,88 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RolesComponent implements OnInit {
   roles: any[] = [];
-  permissions: any[] = [];
-  selectedRole: any = null;
-  newRole = { nom: '', description: '' };
+  roleForm: FormGroup;
+  modeModification = false;
+  roleSelectionne: any = null;
 
-  constructor(private api: ApiService, private snack: MatSnackBar) {}
+  constructor(
+    private api: ApiService,
+    private fb: FormBuilder,
+    private snack: MatSnackBar
+  ) {
+    this.roleForm = this.fb.group({
+      nom: ['', Validators.required],
+      description: [''],
+      est_actif: [true]
+    });
+  }
 
   ngOnInit(): void {
-    this.loadRoles();
-    this.api.getPermissions().subscribe(res => this.permissions = res.data);
+    this.charger();
   }
 
-  loadRoles(): void {
-    this.api.getRoles().subscribe(res => {
-      this.roles = res.data;
-      if (this.selectedRole) {
-        // rafraîchir les données du rôle sélectionné
-        const updated = this.roles.find(r => r.id === this.selectedRole.id);
-        if (updated) this.selectedRole = updated;
-      }
+  charger(): void {
+    this.api.getRoles().subscribe({
+      next: (res) => this.roles = res.data ?? [],
+      error: (err) => console.error(err)
     });
   }
 
-  selectRole(role: any): void {
-    this.selectedRole = { ...role, permissionsNames: role.permissions?.map((p:any) => p.id) || [] };
+  ouvrirAjout(): void {
+    this.modeModification = false;
+    this.roleSelectionne = null;
+    this.roleForm.reset({ nom: '', description: '', est_actif: true });
   }
 
-  addRole(): void {
-    this.api.creerRole(this.newRole).subscribe({
-      next: () => {
-        this.snack.open('Rôle créé', 'Fermer', { duration: 13000 });
-        this.newRole = { nom: '', description: '' };
-        this.loadRoles();
-      },
-      error: (err) => this.snack.open(err.error?.message || 'Erreur', 'Fermer', { duration: 13000 })
+  ouvrirModification(role: any): void {
+    this.modeModification = true;
+    this.roleSelectionne = role;
+    this.roleForm.patchValue({
+      nom: role.nom,
+      description: role.description,
+      est_actif: role.est_actif
     });
   }
 
-  saveRole(role: any): void {
-    this.api.modifierRole(role.id, { nom: role.nom, description: role.description, est_actif: role.est_actif }).subscribe({
-      next: () => this.snack.open('Rôle mis à jour', 'Fermer', { duration: 13000 }),
-      error: (err) => this.snack.open(err.error?.message || 'Erreur', 'Fermer', { duration: 13000 })
-    });
+  annuler(): void {
+    this.modeModification = false;
+    this.roleSelectionne = null;
   }
 
-  deleteRole(id: number): void {
-    if (confirm('Supprimer ce rôle ?')) {
-      this.api.supprimerRole(id).subscribe({
-        next: () => {
-          this.snack.open('Rôle supprimé', 'Fermer', { duration: 13000 });
-          this.selectedRole = null;
-          this.loadRoles();
+  soumettre(): void {
+    if (this.roleForm.invalid) return;
+
+    const data = this.roleForm.value;
+
+    if (this.modeModification) {
+      this.api.modifierRole(this.roleSelectionne.id, data).subscribe({
+        next: (res) => {
+          this.snack.open(res.message, 'Fermer', { duration: 3000 });
+          this.annuler();
+          this.charger();
         },
-        error: (err) => this.snack.open(err.error?.message || 'Erreur', 'Fermer', { duration: 13000 })
+        error: (err) => this.snack.open(err.error?.message ?? 'Erreur', 'Fermer', { duration: 3000 })
+      });
+    } else {
+      this.api.creerRole(data).subscribe({
+        next: (res) => {
+          this.snack.open(res.message, 'Fermer', { duration: 3000 });
+          this.charger();
+          this.roleForm.reset({ nom: '', description: '', est_actif: true });
+        },
+        error: (err) => this.snack.open(err.error?.message ?? 'Erreur', 'Fermer', { duration: 3000 })
       });
     }
   }
 
-  updatePermissions(roleId: number, permIds: number[]): void {
-    this.api.syncRolePermissions(roleId, permIds).subscribe({
-      next: () => this.snack.open('Permissions mises à jour', 'Fermer', { duration: 13000 }),
-      error: (err) => this.snack.open(err.error?.message || 'Erreur', 'Fermer', { duration: 13000 })
+  supprimer(id: number): void {
+    if (!confirm('Supprimer ce rôle ?')) return;
+    this.api.supprimerRole(id).subscribe({
+      next: (res) => {
+        this.snack.open(res.message, 'Fermer', { duration: 3000 });
+        this.charger();
+      },
+      error: (err) => this.snack.open(err.error?.message ?? 'Erreur', 'Fermer', { duration: 3000 })
     });
   }
 }

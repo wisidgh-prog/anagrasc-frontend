@@ -6,7 +6,7 @@
    ANAGRASC – Thème Material personnalisé (Palette V1)
    Couleurs : anthracite #2a2a2a · jaune #fac629
    ============================================================ */
-   
+
 // // ── Palette primaire : bleu ANAGRASC ──────────────────────────── //
 // $anagrasc-primary-palette: (
 //    50  : #e2e8ed,
@@ -323,20 +323,20 @@ aside,
 
 // 2. Définition des palettes
 $ana-primary-palette: (
-  50  : #e8e8e8,
-  100 : #c5c5c5,
-  200 : #9e9e9e,
-  300 : #777777,
-  400 : #595959,
-  500 : #2a2a2a,   // anthracite principal
-  600 : #252525,
-  700 : #1f1f1f,
-  800 : #191919,
-  900 : #0f0f0f,
-  A100: #6b6b6b,
-  A200: #4d4d4d,
-  A400: #303030,
-  A700: #171717,
+  50  : #e8f5e9,
+  100 : #c8e6c9,
+  200 : #a5d6a7,
+  300 : #81c784,
+  400 : #66bb6a,
+  500 : #43A047,   // couleur principale
+  600 : #388e3c,
+  700 : #2e7d32,
+  800 : #1b5e20,
+  900 : #0a3d0a,
+  A100: #b9f6ca,
+  A200: #69f0ae,
+  A400: #00e676,
+  A700: #00c853,
   contrast: (
     50  : rgba(0,0,0,.87),
     100 : rgba(0,0,0,.87),
@@ -356,38 +356,38 @@ $ana-primary-palette: (
 );
 
 $ana-accent-palette: (
-  50  : #fff9e1,
-  100 : #fff0b3,
-  200 : #ffe780,
-  300 : #ffdd4d,
-  400 : #ffd526,
-  500 : #fac629,   // jaune vif
-  600 : #f0bc25,
-  700 : #e5b21f,
-  800 : #daa81a,
-  900 : #c5940f,
-  A100: #ffffff,
-  A200: #fff4d4,
-  A400: #ffe38a,
-  A700: #ffd966,
+ 50  : #fff8e1,
+  100 : #ffecb3,
+  200 : #ffe082,
+  300 : #ffd54f,
+  400 : #ffca28,
+  500 : #FFB300,   // couleur accent principale
+  600 : #ffa000,
+  700 : #ff8f00,
+  800 : #ff6f00,
+  900 : #e65100,
+  A100: #ffe57f,
+  A200: #ffd740,
+  A400: #ffc400,
+  A700: #ffab00,
   contrast: (
     50  : rgba(0,0,0,.87),
     100 : rgba(0,0,0,.87),
     200 : rgba(0,0,0,.87),
     300 : rgba(0,0,0,.87),
     400 : rgba(0,0,0,.87),
-    500 : rgba(0,0,0,.87),
-    600 : rgba(0,0,0,.87),
-    700 : rgba(0,0,0,.87),
-    800 : rgba(0,0,0,.87),
-    900 : rgba(0,0,0,.87),
+    500 : #212121,
+    600 : #212121,
+    700 : #212121,
+    800 : #212121,
+    900 : #fff,
     A100: rgba(0,0,0,.87),
-    A200: rgba(0,0,0,.87),
-    A400: rgba(0,0,0,.87),
-    A700: rgba(0,0,0,.87),
+    A200: #212121,
+    A400: #212121,
+    A700: #212121,
   )
 );
-
+// palette warn pour les erreurs
 $ana-warn-palette: (
   50  : #f9e7e8,
   100 : #f0c2c5,
@@ -441,129 +441,65 @@ $ana-theme: mat.define-light-theme((
 
 @include mat.all-component-themes($ana-theme);
 
-// 5. Variables CSS globales (compatibles avec nos classes)
+// 5. Variables CSS globales 
 :root {
-  --primary       : #2a2a2a;
-  --primary-light : #4a4a4a;
-  --accent        : #fac629;
+  --primary       : #43A047;
+  --primary-light : #66bb6a;
+  --accent        : #FFB300;
   --accent-dark   : #5c4a0b;   // texte foncé sur fond jaune
-  --surface       : #f7f7f1;
-  --card-bg       : #ffffff;
-  --text-main     : #2a2a2a;
+  --surface       : #FAFAFA;
+  --card-bg       : #FFFFFF;
+  --text-main     : #212121;
   --text-muted    : #6b7280;
-  --success       : #2f9048;
-  --danger        : #c52328;
-  --warning       : #eccc55;
+  --success       : #2e7d32;
+  --danger        : #C62828;
+  --warning       : #F9A825;
   --radius        : 8px;
   --shadow        : 0 2px 8px rgba(0,0,0,.08);
 }
 
-// // 6. Styles de base
-// * { box-sizing: border-box;  }
-// .mat-mdc-card,
-// mat-card,
-// aside,
-// .page-container,
-// .layout-catalogue {
-//   overflow: visible !important;
-// }
-// body {
-//   font-family: 'Roboto', sans-serif;
-//   background: var(--surface);
-//   color: var(--text-main);
-// }
+// ── Grilles responsives ───────────────────────────────────────────
+// Container principal adaptable
+.page-container {
+  max-width: 1200px; // largeur max confortable même sur 21″
+  margin: 0 auto;
+  padding: 24px 16px;
 
-// // 7. Classes utilitaires
-// .page-container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
-// .ana-card        { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
+  @media (max-width: 1200px) { max-width: 100%; }
+  @media (max-width: 600px) { padding: 16px 12px; }
+}
 
-// // 8. Badges (conservés)
-// .ana-badge {
-//   display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 20px;
-//   font-size: 12px; font-weight: 500;
-//   &--live    { background: #e8f5e9; color: var(--success); }
-//   &--soon    { background: #fff8e1; color: var(--warning); }
-//   &--done    { background: #f5f5f5; color: #616161; }
-//   &--waiting { background: #e3f2fd; color: #1565c0; }
-//   &--danger  { background: #ffebee; color: var(--danger); }
-// }
+// Masquer/afficher sur mobile
+.mobile-only { display: none !important; }
+@media (max-width: 768px) {
+  .mobile-only { display: block !important; }
+  .desktop-only { display: none !important; }
+}
 
-// // 9. Boutons personnalisés
-// .mat-mdc-raised-button.ana-btn-primary {
-//   background-color: var(--primary) !important;
-//   color: #fff !important;
-// }
-// .mat-mdc-raised-button.ana-btn-accent {
-//   background-color: var(--accent) !important;
-//   color: var(--primary) !important;   // texte foncé sur jaune
-// }
+// Cartes adaptatives
+mat-card, .ana-mat-card {
+  margin-bottom: 16px;
 
-// // 10. Barre d'outils
-// .ana-toolbar {
-//   background: var(--primary) !important;
-//   color: #fff !important;
-//   .mat-mdc-button { color: rgba(255,255,255,.8) !important; }
-//   .mat-mdc-button.active { color: #fff !important; font-weight: 500; border-bottom: 2px solid var(--accent); }
-// }
+  @media (max-width: 600px) {
+    padding: 16px !important;
+  }
+}
 
-// // 11. Timer
-// .ana-timer {
-//   font-size: 2.5rem; font-weight: 700; font-variant-numeric: tabular-nums;
-//   color: var(--accent); letter-spacing: 2px;
-//   &--urgent { color: var(--danger); animation: pulse 1s infinite; }
-// }
-// @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+// Tableaux Material sur petits écrans : scroll horizontal si nécessaire
+.mat-mdc-table {
+  @media (max-width: 768px) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
 
-// // 12. Sidebar (styles communs)
-// .sidebar-section {
-//   font-size: 0.65rem; font-weight: 600; color: var(--text-muted);
-//   text-transform: uppercase; letter-spacing: 0.5px; padding: 16px 16px 4px;
-// }
-// .sidebar-link {
-//   width: 100%; justify-content: flex-start; padding-left: 16px;
-//   font-size: 0.85rem; color: var(--text-main); border-left: 3px solid transparent;
-//   mat-icon { margin-right: 8px; font-size: 20px; }
-//   &:hover { background: #f3f4f6; }
-//   &.active {
-//     background: #fdf3d0; color: #4a3800; font-weight: 600;
-//     border-left-color: var(--accent);
-//   }
-// }
-
-// // 13. Correctifs finaux (overlay, selects, stepper, snackbar)
-// .cdk-overlay-container
-//  {
-//   z-index: 9999 !important;
-//    position: fixed !important;
-//    }
-// .cdk-overlay-pane
-//   {
-//   z-index: 9999 !important;
-// }
-// .mat-mdc-select-panel
-// {
-//   background: #fff !important;
-//    border-radius: var(--radius) !important;
-//   box-shadow: 0 4px 20px rgba(0,0,0,.15) !important;
-//   z-index: 9999 !important;
-// }
-// .mat-mdc-option {
-//   font-size: 14px; color: var(--text-main);
-//   &:hover:not(.mdc-list-item--disabled) { background: rgba(0,0,0,.06); }
-//   &.mdc-list-item--selected { background: rgba(0,0,0,.1); color: var(--primary); font-weight: 500; }
-// }
-
-// // Stepper d'inscription
-// // ::ng-deep .mat-step-content,
-// // ::ng-deep .mat-horizontal-stepper-content { overflow: visible !important; }
-// // .inscription-card { overflow: visible !important; }
-
-// // Snackbar
-// .snack-success .mdc-snackbar__surface { background: var(--success) !important; color: #fff !important; }
-// .snack-error .mdc-snackbar__surface   { background: var(--danger) !important; color: #fff !important; }
-
-// // 14. Surcharge des cartes Material
-// mat-card.ana-mat-card {
-//   border-radius: var(--radius) !important;
-//   box-shadow: var(--shadow) !important;
-// }
+// Titres adaptatifs
+h2 {
+  font-size: 1.6rem;
+  @media (max-width: 600px) { font-size: 1.3rem; }
+}
+h3 {
+  font-size: 1.2rem;
+  @media (max-width: 600px) { font-size: 1rem; }
+}

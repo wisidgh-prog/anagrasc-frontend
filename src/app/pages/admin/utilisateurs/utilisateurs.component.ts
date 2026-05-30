@@ -65,6 +65,13 @@ export class UtilisateursComponent implements OnInit {
       error: e => this.snack.open(e.error?.message ?? 'Erreur', 'Fermer', { duration: 3000, panelClass: 'snack-error' })
     });
   }
+ //voir les details
+ voirDetails(user: any): void {
+  this.dialog.open(UserDetailsDialogComponent, {
+    data: user,
+    width: '500px'
+  });
+}
 //suspendre
   suspendre(id: number): void {
     const motif = prompt('Motif de la suspension :');

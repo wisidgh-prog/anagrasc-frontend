@@ -1,0 +1,36 @@
+<div class="sidebar" [class.closed]="!isOpen">
+  <!-- Bouton toggle -->
+  <button mat-icon-button class="toggle-btn" (click)="toggle()">
+    <mat-icon>{{ isOpen ? 'menu_open' : 'menu' }}</mat-icon>
+  </button>
+
+  <!-- Contenu visible quand la sidebar est ouverte -->
+  <ng-container *ngIf="isOpen">
+    <!-- Profil (affiché pour commissaire, superviseur et enchérisseur) -->
+    <div *ngIf="role === 'commissaire_priseur' || role === 'superviseur' || role === 'encherisseur'" class="sidebar-profile">
+      <div class="profile-avatar">{{ getInitiales() }}</div>
+      <div>
+        <div class="profile-name">{{ getRoleName() }}</div>
+        <div class="profile-role">ANAGRASC</div>
+      </div>
+    </div>
+
+    <!-- Liens dynamiques -->
+    <ng-container *ngFor="let groupe of menus">
+      <div class="sidebar-section">{{ groupe.section }}</div>
+      <a *ngFor="let lien of groupe.liens"
+         mat-button class="sidebar-link"
+         [class.active]="estActif(lien.route)"
+         [routerLink]="lien.route">
+        <mat-icon>{{ lien.icon }}</mat-icon> {{ lien.label }}
+      </a>
+    </ng-container>
+
+    <!-- Déconnexion -->
+    <div class="sidebar-footer">
+      <button mat-button color="warn" (click)="deconnecter()">
+        <mat-icon>logout</mat-icon> Déconnexion
+      </button>
+    </div>
+  </ng-container>
+</div>

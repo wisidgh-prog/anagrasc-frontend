@@ -54,7 +54,7 @@ export class SessionsComponent implements OnInit {
       },
       error: () => { this.chargement = false; }
     });
-    this.api.getMesBiens({ statut: 'publie' }).subscribe({
+    this.api.getBiens({ statut: 'publie' }).subscribe({
       next: res => (this.biensPublies = res.data )
 
     });

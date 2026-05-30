@@ -12,10 +12,18 @@ export class DashboardCommissaireComponent implements OnInit {
   sessions: any[] = [];
   chargement = true;
   erreur = '';
+  // metrics: any[] = [];
 
   constructor(private api: ApiService) {}
 
   ngOnInit(): void {
+
+//     this.metrics = [
+//   { label: 'Biens publiés', value: this.stats.biens_publies, color: 'var(--primary)' },
+//   { label: 'Sessions en cours', value: this.stats.sessions_en_cours, color: 'var(--success)' },
+//   { label: 'Sessions à venir', value: this.stats.sessions_a_venir, color: '#f57f17' },
+//   { label: 'Incidents ouverts', value: this.stats.incidents_ouverts, color: this.stats.incidents_ouverts > 0 ? 'var(--danger)' : 'var(--success)' }
+// ];
     // Charger les statistiques du dashboard
     this.api.getDashboardCommissaire().subscribe({
       next: (res) => {
@@ -30,7 +38,7 @@ export class DashboardCommissaireComponent implements OnInit {
     // Charger les 5 derniers biens publiés
     this.api.getMesBiens({ statut: 'publie' }).subscribe({
       next: (res) => {
-        this.biens = (res.data.data ?? []).slice(0, 5);
+        this.biens = (res.data).slice(0, 5);
       },
       error: () => {
         this.erreur = 'Erreur lors du chargement des biens.';
@@ -40,7 +48,7 @@ export class DashboardCommissaireComponent implements OnInit {
     // Charger les 5 dernières sessions
     this.api.getMesSessions('commissaire_priseur').subscribe({
       next: (res) => {
-        this.sessions = (res.data.data ?? []).slice(0, 5);
+        this.sessions = (res.data).slice(0, 5);
       },
       error: () => {
         this.erreur = 'Erreur lors du chargement des sessions.';

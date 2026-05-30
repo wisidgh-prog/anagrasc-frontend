@@ -1,0 +1,145 @@
+<div class="page-container">
+  <h2>Gestion des biens</h2>
+
+  <!-- Filtre statut -->
+  <mat-form-field appearance="outline" style="width:200px;">
+    <mat-label>Statut</mat-label>
+    <mat-select [(ngModel)]="filtreStatut" (selectionChange)="charger()">
+      <mat-option value="">Tous</mat-option>
+      <mat-option value="en_attente_validation">En attente</mat-option>
+      <mat-option value="publie">Publié</mat-option>
+      <mat-option value="en_cours">En cours</mat-option>
+      <mat-option value="vendu">Vendu</mat-option>
+      <mat-option value="annule">Annulé</mat-option>
+      <mat-option value="rejete">Rejeté</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Tableau des biens -->
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="biens">
+        <!-- Colonne Titre -->
+        <ng-container matColumnDef="titre">
+          <th mat-header-cell *matHeaderCellDef>Titre</th>
+          <td mat-cell *matCellDef="let b">{{ b.titre }}</td>
+        </ng-container>
+
+        <!-- Colonne Statut -->
+        <ng-container matColumnDef="statut">
+          <th mat-header-cell *matHeaderCellDef>Statut</th>
+          <td mat-cell *matCellDef="let b">
+            <span class="ana-badge"
+                  [class.ana-badge--waiting]="b.statut==='en_attente_validation'"
+                  [class.ana-badge--live]="b.statut==='en_cours'"
+                  [class.ana-badge--soon]="b.statut==='publie'"
+                  [class.ana-badge--done]="b.statut==='vendu'"
+                  [class.ana-badge--danger]="b.statut==='annule' || b.statut==='rejete'">
+              {{ libelleStatut(b.statut) }}
+            </span>
+            <span *ngIf="b.statut==='rejete' && b.motif_rejet"
+                  [matTooltip]="b.motif_rejet"
+                  style="margin-left:6px; cursor:help;"
+                  class="text-muted small">
+              <mat-icon style="font-size:16px;">info</mat-icon>
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Colonne Créé par -->
+        <ng-container matColumnDef="commissaire">
+          <th mat-header-cell *matHeaderCellDef>Créé par</th>
+          <td mat-cell *matCellDef="let b">{{ b.createur?.nom_complet }}</td>
+        </ng-container>
+
+        <!-- Colonne Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let b">
+            <!-- En attente : valider + rejeter + modifier -->
+            <ng-container *ngIf="b.statut==='en_attente_validation'">
+              <button mat-icon-button color="primary" (click)="valider(b.id)" matTooltip="Valider">
+                <mat-icon>check_circle</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="rejeter(b.id)" matTooltip="Rejeter">
+                <mat-icon>cancel</mat-icon>
+              </button>
+              <button mat-icon-button (click)="ouvrirModification(b)" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-container>
+            <!-- Rejeté : modifier uniquement -->
+            <ng-container *ngIf="b.statut==='rejete'">
+              <button mat-icon-button (click)="ouvrirModification(b)" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </ng-container>
+            <!-- Autres statuts : on peut laisser l'admin modifier si besoin -->
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['titre','statut','commissaire','actions']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['titre','statut','commissaire','actions'];"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Panneau de modification -->
+  <mat-card *ngIf="modeModification" class="modification-card">
+    <mat-card-title>Modifier le bien</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="bienForm" (ngSubmit)="enregistrerModification()">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Titre</mat-label>
+              <input matInput formControlName="titre">
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Catégorie</mat-label>
+              <mat-select formControlName="categorie_id">
+                <mat-option *ngFor="let cat of categories" [value]="cat.id">{{ cat.libelle }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-12">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput rows="3" formControlName="description"></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Mise à prix (FCFA)</mat-label>
+              <input matInput type="number" formControlName="mise_a_prix">
+            </mat-form-field>
+          </div>
+          <div class="col-md-8">
+            <mat-form-field appearance="outline">
+              <mat-label>Lieu de retrait</mat-label>
+              <input matInput formControlName="lieu_retrait">
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Horaires de visite</mat-label>
+              <input matInput formControlName="horaires_visite">
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="outline">
+              <mat-label>Remarques</mat-label>
+              <input matInput formControlName="remarques">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+          <button mat-raised-button color="primary" type="submit">Enregistrer</button>
+          <button mat-button (click)="annulerModification()">Annuler</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
