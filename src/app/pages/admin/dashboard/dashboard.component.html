@@ -37,7 +37,9 @@
       <mat-card-content class="p-0">
         <table mat-table [dataSource]="stats.dernieres_sessions" class="w-full">
           <ng-container matColumnDef="bien"><th mat-header-cell *matHeaderCellDef>Bien</th><td mat-cell *matCellDef="let s">{{ s.bien?.titre }}</td></ng-container>
-          <ng-container matColumnDef="statut"><th mat-header-cell *matHeaderCellDef>Statut</th><td mat-cell *matCellDef="let s"><span class="ana-badge" [class.ana-badge--live]="s.statut==='en_cours'" [class.ana-badge--soon]="s.statut==='a_venir'" [class.ana-badge--done]="s.statut==='terminee'">{{ s.statut }}</span></td></ng-container>
+          <ng-container matColumnDef="statut"><th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let s">
+              <span class="ana-badge" [class.ana-badge--live]="s.statut==='en_cours'" [class.ana-badge--soon]="s.statut==='a_venir'" [class.ana-badge--done]="s.statut==='terminee'">{{ s.statut }}</span></td></ng-container>
           <ng-container matColumnDef="date"><th mat-header-cell *matHeaderCellDef>Date</th><td mat-cell *matCellDef="let s">{{ s.created_at | date:'dd/MM/yyyy' }}</td></ng-container>
           <tr mat-header-row *matHeaderRowDef="['bien','statut','date']"></tr>
           <tr mat-row *matRowDef="let row; columns: ['bien','statut','date'];"></tr>

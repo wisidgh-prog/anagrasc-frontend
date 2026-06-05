@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-logs',
   templateUrl: './logs.component.html',
@@ -33,7 +33,7 @@ export class LogsComponent implements OnInit {
     { val: 'offre', lib: 'Offre placée' },
   ];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private http: HttpClient) {}
 
   ngOnInit(): void { this.charger(); }
 
@@ -65,4 +65,19 @@ export class LogsComponent implements OnInit {
     if (action.includes('config')) return 'bg-warning text-dark';
     return 'bg-secondary';
   }
+  exporterPDF(): void {
+  // responseType: 'blob' dit à Angular que la réponse est un fichier binaire
+  this.http.get('http://localhost:8000/api/logs/export', {
+    responseType: 'blob',
+    headers: { Authorization: 'Bearer ' + localStorage.getItem('token') }
+  }).subscribe(blob => {
+    // Créer un lien invisible, simuler un clic, puis le supprimer
+    const url    = URL.createObjectURL(blob);
+    const lien   = document.createElement('a');
+    lien.href    = url;
+    lien.download = 'logs_anagrasc.pdf';
+    lien.click();
+    URL.revokeObjectURL(url); // libérer la mémoire
+  });
+}
 }
