@@ -76,7 +76,7 @@ export class UtilisateursComponent implements OnInit {
   suspendre(id: number): void {
     const motif = prompt('Motif de la suspension :');
     if (!motif) return;
-    this.api.suspendrCompte(id, motif).subscribe({
+    this.api.suspendreCompte(id, motif).subscribe({
       next: r => {
         this.snack.open(r.message, '', { duration: 3000, panelClass: 'snack-success' });
         this.charger();

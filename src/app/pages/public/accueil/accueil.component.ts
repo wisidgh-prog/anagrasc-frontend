@@ -16,7 +16,7 @@ export class AccueilComponent implements OnInit {
   ngOnInit(): void {
     this.api.getBiens({ statut: 'en_cours' }).subscribe({
       next: (res) => {
-        this.sessionsEnCours = res.data;
+        this.sessionsEnCours = res.data ;
         this.chargement = false;
       },
       error: () => (this.chargement = false)

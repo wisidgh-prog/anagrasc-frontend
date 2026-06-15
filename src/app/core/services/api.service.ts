@@ -8,9 +8,19 @@ export class ApiService {
   private url = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
+  // private toParams(filtres: any): HttpParams {
+  //   let p = new HttpParams();
+  //   Object.keys(filtres).forEach(k => { if (filtres[k]) p = p.set(k, filtres[k]); });
+  //   return p;
+  // }
+
   private toParams(filtres: any): HttpParams {
     let p = new HttpParams();
-    Object.keys(filtres).forEach(k => { if (filtres[k]) p = p.set(k, filtres[k]); });
+    Object.keys(filtres).forEach(k => {
+      if (filtres[k] !== null && filtres[k] !== undefined && filtres[k] !== '') {
+        p = p.set(k, filtres[k]);
+      }
+    });
     return p;
   }
 
@@ -63,20 +73,24 @@ export class ApiService {
   signalerIncident(d: any): Observable<any>          { return this.http.post(`${this.url}/incidents`, d); }
   decisionIncident(id: number, d: any): Observable<any> { return this.http.post(`${this.url}/incidents/${id}/decision`, d); }
 
-  // ── ADMIN ──────────────────────────────────────
+  // ── ADMIN UTILISATEURS ──────────────────────────────────────
+
   getUtilisateurs(f: any = {}): Observable<any>      { return this.http.get(`${this.url}/utilisateurs`, { params: this.toParams(f) }); }
   validerCompte(id: number): Observable<any>          { return this.http.post(`${this.url}/utilisateurs/${id}/valider`, {}); }
   rejeterCompte(id: number, motif: string): Observable<any> { return this.http.post(`${this.url}/utilisateurs/${id}/rejeter`, { motif }); }
-  suspendrCompte(id: number, motif: string): Observable<any> { return this.http.post(`${this.url}/utilisateurs/${id}/suspendre`, { motif }); }
+  suspendreCompte(id: number, motif: string): Observable<any> { return this.http.post(`${this.url}/utilisateurs/${id}/suspendre`, { motif }); }
   creerCompteInterne(d: any): Observable<any>        { return this.http.post(`${this.url}/utilisateurs/interne`, d); }
 // ── ADMIN CONFIGURATIONS ───────────────────────────────────────
   getLogs(f: any = {}): Observable<any>              { return this.http.get(`${this.url}/logs`, { params: this.toParams(f) }); }
   getConfigurations(): Observable<any>               { return this.http.get(`${this.url}/configurations`); }
   modifierConfiguration(id: number, valeur: string): Observable<any> { return this.http.put(`${this.url}/configurations/${id}`, { valeur }); }
   getDashboardAdmin(): Observable<any>               { return this.http.get(`${this.url}/admin/dashboard`); }
+  getPermissions(): Observable<any>                 { return this.http.get(`${this.url}/permissions`); }
+  // ── ADMIN LOGS ───────────────────────────────────────
+  exportLogs(filtres: any = {}): Observable<Blob> {  return this.http.get(`${this.url}/logs/export`, {  responseType: 'blob',params: this.toParams(filtres)});
 
-  getPermissions(): Observable<any>                    { return this.http.get(`${this.url}/permissions`); }
-  //ROLE
+}
+  //── ADMIN ROLES ───────────────────────────────────────
   getRoles(): Observable<any>                        { return this.http.get(`${this.url}/roles`); }
   creerRole(d: any): Observable<any>                 { return this.http.post(`${this.url}/roles`, d); }
   modifierRole(id: number, d: any): Observable<any>   { return this.http.put(`${this.url}/roles/${id}`, d); }
@@ -86,7 +100,7 @@ export class ApiService {
 getBiensAdmin(filtres: any = {}): Observable<any> {
     let params = new HttpParams();
     Object.keys(filtres).forEach(k => { if (filtres[k]) params = params.set(k, filtres[k]); });
-    return this.http.get(`${this.url}/biens`, { params });
+    return this.http.get(`${this.url}/admin/biens`, { params });
 }
 validerBien(id: number): Observable<any> {return this.http.post(`${this.url}/biens/${id}/valider`, {});}
 rejeterBien(id: number, motif: string): Observable<any> {return this.http.post(`${this.url}/biens/${id}/rejeter`, { motif });}

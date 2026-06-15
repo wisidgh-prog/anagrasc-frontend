@@ -60,7 +60,7 @@ export class SessionsComponent implements OnInit {
       },
       error: () => { this.chargement = false; }
     });
-    // Ne plus charger les biens ici, déjà fait dans ngOnInit
+
   }
 
   ouvrirCreation(): void {
