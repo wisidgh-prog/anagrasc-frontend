@@ -45,7 +45,7 @@ export class WalletComponent implements OnInit {
 
   chargerTransactions(): void {
     this.api.getTransactions().subscribe({
-      next: (res) => (this.transactions = res.data.data ?? [])
+      next: (res) => (this.transactions = res.data ?? [])
     });
   }
 

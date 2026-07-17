@@ -47,7 +47,7 @@ export class SessionsComponent implements OnInit {
 
     // Charger la liste des superviseurs (si la route existe)
     this.api.getSuperviseurs().subscribe({
-      next: (res: any) => this.superviseurs = res.data ?? []
+      next: (res: any) => this.superviseurs = res.data 
     });
   }
 

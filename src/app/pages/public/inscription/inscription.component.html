@@ -72,10 +72,11 @@
         <div class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>Date de naissance </mat-label>
-            <input matInput type="date" formControlName="date_naissance">
+            <input matInput type="datetime-local" formControlName="date_naissance">
             <mat-error *ngIf="physiqueGroup.get('date_naissance')?.hasError('required')">Date requise</mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
+
             <mat-label>Lieu de naissance </mat-label>
             <input matInput formControlName="lieu_naissance" placeholder="Ouagadougou">
             <mat-error *ngIf="physiqueGroup.get('lieu_naissance')?.hasError('required')">Lieu requis</mat-error>
@@ -120,7 +121,7 @@
         <div class="form-row">
           <mat-form-field appearance="outline">
             <mat-label>Date de naissance </mat-label>
-            <input matInput type="date" formControlName="representant_legal_date_naissance">
+            <input matInput type="datetime-local" formControlName="representant_legal_date_naissance">
             <mat-error *ngIf="moraleGroup.get('representant_legal_date_naissance')?.hasError('required')">Date requise</mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
