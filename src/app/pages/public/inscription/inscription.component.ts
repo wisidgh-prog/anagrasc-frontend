@@ -24,6 +24,13 @@ export class InscriptionComponent {
   pieceRectoFichier: File | null = null;
   pieceVersoFichier: File | null = null;
 
+  // Date max pour la date de naissance (au moins 18 ans)
+  dateMaxNaissance: Date = (() => {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - 18);
+  return d;
+     })();
+
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
@@ -36,6 +43,10 @@ export class InscriptionComponent {
       date_naissance: ['', Validators.required],
       lieu_naissance: ['', Validators.required]
     });
+    // controle sur les dates de naissance
+
+    // Max = aujourd'hui - 18 ans
+
 
     this.moraleGroup = this.fb.group({
       raison_sociale: ['', Validators.required],
@@ -122,6 +133,12 @@ export class InscriptionComponent {
 
     // Champs spécifiques
     const groupeActif = type === 'physique' ? this.physiqueGroup.value : this.moraleGroup.value;
+
+    const formatDate = (d: any): string => {
+      if (!d) return '';
+      return new Date(d).toISOString().slice(0, 10); // YYYY-MM-DD
+    };
+    
     Object.keys(groupeActif).forEach(key => {
       fd.append(key, groupeActif[key] ?? '');
     });

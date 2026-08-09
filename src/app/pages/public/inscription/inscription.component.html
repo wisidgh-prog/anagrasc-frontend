@@ -58,47 +58,59 @@
     <ng-container *ngIf="inscriptionForm.get('type_personne')?.value === 'physique'">
       <div [formGroup]="physiqueGroup">
         <div class="form-row">
+          <!-- Nom -->
           <mat-form-field appearance="outline">
             <mat-label>Nom </mat-label>
             <input matInput formControlName="nom" placeholder="TRAORE">
             <mat-error *ngIf="physiqueGroup.get('nom')?.hasError('required')">Nom requis</mat-error>
           </mat-form-field>
+          <!-- Prénom -->
           <mat-form-field appearance="outline">
             <mat-label>Prénom </mat-label>
             <input matInput formControlName="prenom" placeholder="Aminata">
             <mat-error *ngIf="physiqueGroup.get('prenom')?.hasError('required')">Prénom requis</mat-error>
           </mat-form-field>
         </div>
-        <div class="form-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Date de naissance </mat-label>
-            <input matInput type="datetime-local" formControlName="date_naissance">
-            <mat-error *ngIf="physiqueGroup.get('date_naissance')?.hasError('required')">Date requise</mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-
-            <mat-label>Lieu de naissance </mat-label>
-            <input matInput formControlName="lieu_naissance" placeholder="Ouagadougou">
-            <mat-error *ngIf="physiqueGroup.get('lieu_naissance')?.hasError('required')">Lieu requis</mat-error>
-          </mat-form-field>
-        </div>
+        <!-- Date de naissance -->
+       <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Date de naissance *</mat-label>
+          <input matInput [matDatepicker]="pickerNaissance"
+                formControlName="date_naissance"
+                [max]="dateMaxNaissance"
+                placeholder="JJ/MM/AAAA" readonly>
+          <mat-datepicker-toggle matSuffix [for]="pickerNaissance"></mat-datepicker-toggle>
+          <mat-datepicker #pickerNaissance></mat-datepicker>
+          <mat-error *ngIf="physiqueGroup.get('date_naissance')?.hasError('required')">Date requise</mat-error>
+          <mat-error *ngIf="physiqueGroup.get('date_naissance')?.hasError('matDatepickerMax')">Vous devez avoir au moins 18 ans</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <!-- Lieu de naissance -->
+          <mat-label>Lieu de naissance *</mat-label>
+          <input matInput formControlName="lieu_naissance" placeholder="Ouagadougou">
+          <mat-error *ngIf="physiqueGroup.get('lieu_naissance')?.hasError('required')">Lieu requis</mat-error>
+        </mat-form-field>
+</div>
       </div>
     </ng-container>
 
     <!-- Personne morale -->
     <ng-container *ngIf="inscriptionForm.get('type_personne')?.value === 'morale'">
       <div [formGroup]="moraleGroup">
+        <!-- Raison sociale -->
         <mat-form-field appearance="outline">
           <mat-label>Raison sociale </mat-label>
           <input matInput formControlName="raison_sociale" placeholder="TRAORE & FILS SARL">
           <mat-error *ngIf="moraleGroup.get('raison_sociale')?.hasError('required')">Raison sociale requise</mat-error>
         </mat-form-field>
         <div class="form-row">
+          <!-- Numéro RCCM -->
           <mat-form-field appearance="outline">
             <mat-label>RCCM </mat-label>
             <input matInput formControlName="num_rccm">
             <mat-error *ngIf="moraleGroup.get('num_rccm')?.hasError('required')">RCCM requis</mat-error>
           </mat-form-field>
+          <!-- Numéro IFU -->
           <mat-form-field appearance="outline">
             <mat-label>IFU</mat-label>
             <input matInput formControlName="num_ifu">
@@ -107,11 +119,13 @@
         <mat-divider style="margin: 8px 0 16px"></mat-divider>
         <p class="section-label">Représentant légal</p>
         <div class="form-row">
+          <!-- Nom -->
           <mat-form-field appearance="outline">
             <mat-label>Nom </mat-label>
             <input matInput formControlName="representant_legal_nom">
             <mat-error *ngIf="moraleGroup.get('representant_legal_nom')?.hasError('required')">Nom requis</mat-error>
           </mat-form-field>
+          <!-- Prénom -->
           <mat-form-field appearance="outline">
             <mat-label>Prénom </mat-label>
             <input matInput formControlName="representant_legal_prenom">
@@ -119,17 +133,28 @@
           </mat-form-field>
         </div>
         <div class="form-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Date de naissance </mat-label>
-            <input matInput type="datetime-local" formControlName="representant_legal_date_naissance">
-            <mat-error *ngIf="moraleGroup.get('representant_legal_date_naissance')?.hasError('required')">Date requise</mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>Lieu de naissance </mat-label>
-            <input matInput formControlName="representant_legal_lieu_naissance">
-            <mat-error *ngIf="moraleGroup.get('representant_legal_lieu_naissance')?.hasError('required')">Lieu requis</mat-error>
-          </mat-form-field>
-        </div>
+  <mat-form-field appearance="outline">
+    <!-- Date de naissance -->
+    <mat-label>Date de naissance *</mat-label>
+    <input matInput [matDatepicker]="pickerRepNaissance"
+           formControlName="representant_legal_date_naissance"
+           [max]="dateMaxNaissance"
+           placeholder="JJ/MM/AAAA" readonly>
+    <mat-datepicker-toggle matSuffix [for]="pickerRepNaissance"></mat-datepicker-toggle>
+    <mat-datepicker #pickerRepNaissance></mat-datepicker>
+    <mat-error *ngIf="moraleGroup.get('representant_legal_date_naissance')?.hasError('required')">Date requise</mat-error>
+    <mat-error *ngIf="moraleGroup.get('representant_legal_date_naissance')?.hasError('matDatepickerMax')">Doit avoir au moins 18 ans</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <!-- Lieu de naissance -->
+    <mat-label>Lieu de naissance *</mat-label>
+    <input matInput formControlName="representant_legal_lieu_naissance">
+    <mat-error *ngIf="moraleGroup.get('representant_legal_lieu_naissance')?.hasError('required')">Lieu requis</mat-error>
+  </mat-form-field>
+</div>
+
+
+        <!-- Fonction -->
         <mat-form-field appearance="outline">
           <mat-label>Fonction </mat-label>
           <input matInput formControlName="representant_legal_fonction" placeholder="Directeur Général">

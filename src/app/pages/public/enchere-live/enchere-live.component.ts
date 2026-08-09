@@ -15,7 +15,7 @@ export class EnchereLiveComponent implements OnInit, OnDestroy {
   offres: any[]     = [];
   meilleureOffre    = 0;
   idMeilleur        = '';
-  secondesRestantes = -1;  
+  secondesRestantes = -1;
   monOffre          = 0;
   chargement        = false;
   sessionTerminee   = false;
@@ -66,7 +66,7 @@ export class EnchereLiveComponent implements OnInit, OnDestroy {
         this.meilleureOffre    = r.data.meilleure_offre    ?? 0;
         this.idMeilleur        = r.data.id_meilleur        ?? '';
         this.offres            = r.data.offres             ?? [];
-        // Resync serveur — source de vérité
+        // Resync serveur
         this.secondesRestantes = r.data.secondes_restantes ?? 0;
         this.sessionTerminee   = r.data.statut === 'terminee';
 
@@ -93,6 +93,18 @@ export class EnchereLiveComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  // Montant minimum autorisé
+  get offreMinimum(): number {
+    return this.meilleureOffre + (this.session?.montant_min_surenchere ?? 1000);
+  }
+
+  // Resync le champ si la meilleure offre a changé
+  private syncOffreProposee(): void {
+    if (this.monOffre < this.offreMinimum) {
+      this.monOffre = this.offreMinimum;
+    }
   }
 
   placerOffre(): void {

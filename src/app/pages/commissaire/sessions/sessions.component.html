@@ -17,6 +17,7 @@
     <mat-card-content>
       <form [formGroup]="sessionForm" (ngSubmit)="creerSession()">
         <div class="row g-3">
+          <!-- bien -->
           <div class="col-md-6">
             <mat-form-field appearance="outline">
               <mat-label>Bien valide </mat-label>
@@ -27,6 +28,7 @@
               <mat-error *ngIf="sessionForm.get('bien_id')?.hasError('required')">Bien requis</mat-error>
             </mat-form-field>
           </div>
+          <!-- Superviseur -->
           <div class="col-md-6">
             <mat-form-field appearance="outline">
               <mat-label>Superviseur</mat-label>
@@ -36,23 +38,59 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <mat-label>Date et heure de début </mat-label>
-              <input matInput type="datetime-local" formControlName="date_debut">
+          <!-- Date début -->
+<div class="col-md-3">
+  <mat-form-field appearance="outline">
+    <mat-label>Date de début *</mat-label>
+    <input matInput [matDatepicker]="pickerDebutDate"
+           formControlName="date_debut_date"
+           [min]="aujourdhui"
+           placeholder="JJ/MM/AAAA" readonly>
+    <mat-datepicker-toggle matSuffix [for]="pickerDebutDate"></mat-datepicker-toggle>
+    <mat-datepicker #pickerDebutDate></mat-datepicker>
+    <mat-error *ngIf="sessionForm.get('date_debut_date')?.hasError('required')">Date obligatoire</mat-error>
+    <mat-error *ngIf="sessionForm.get('date_debut_date')?.hasError('matDatepickerMin')">Date dans le futur requise</mat-error>
+  </mat-form-field>
+</div>
 
-            
-              <mat-error *ngIf="sessionForm.get('date_debut')?.hasError('required')">Date obligatoire</mat-error>
-            </mat-form-field>
-          </div>
-          <div class="col-md-6">
-            <mat-form-field appearance="outline">
-              <mat-label>Date et heure de fin </mat-label>
-              <input matInput type="datetime-local" formControlName="date_fin">
-                 <!-- <input matInput type="datetime-local" > -->
-              <mat-error *ngIf="sessionForm.get('date_fin')?.hasError('required')">Date obligatoire</mat-error>
-            </mat-form-field>
-          </div>
+<div class="col-md-3">
+  <mat-form-field appearance="outline">
+    <mat-label>Heure de début *</mat-label>
+    <input matInput type="time" formControlName="heure_debut"
+           placeholder="HH:MM">
+    <mat-error *ngIf="sessionForm.get('heure_debut')?.hasError('required')">Heure obligatoire</mat-error>
+  </mat-form-field>
+</div>
+
+<!-- Date fin -->
+<div class="col-md-3">
+  <mat-form-field appearance="outline">
+    <mat-label>Date de fin *</mat-label>
+    <input matInput [matDatepicker]="pickerFinDate"
+           formControlName="date_fin_date"
+           [min]="sessionForm.get('date_debut_date')?.value || aujourdhui"
+           placeholder="JJ/MM/AAAA" readonly>
+    <mat-datepicker-toggle matSuffix [for]="pickerFinDate"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFinDate></mat-datepicker>
+    <mat-error *ngIf="sessionForm.get('date_fin_date')?.hasError('required')">Date obligatoire</mat-error>
+    <mat-error *ngIf="sessionForm.get('date_fin_date')?.hasError('matDatepickerMin')">Doit être après la date de début</mat-error>
+  </mat-form-field>
+</div>
+
+<div class="col-md-3">
+  <mat-form-field appearance="outline">
+    <mat-label>Heure de fin *</mat-label>
+    <input matInput type="time" formControlName="heure_fin"
+           placeholder="HH:MM">
+    <mat-error *ngIf="sessionForm.get('heure_fin')?.hasError('required')">Heure obligatoire</mat-error>
+  </mat-form-field>
+</div>
+
+<!-- Erreur globale dates -->
+<div class="col-12" *ngIf="sessionForm.hasError('dateFinInvalide')">
+  <mat-error>La date/heure de fin doit être après la date/heure de début.</mat-error>
+</div>
+          <!-- Mise à prix effective -->
           <div class="col-md-4">
             <mat-form-field appearance="outline">
               <mat-label>Mise à prix effective (FCFA) *</mat-label>

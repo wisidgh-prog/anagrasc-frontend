@@ -75,7 +75,7 @@
       </mat-card>
 
       <!-- Formulaire enchère -->
-      <mat-card *ngIf="auth.estConnecte && secondesRestantes > 0">
+      <mat-card *ngIf="auth.estConnecte && sessionActive">
         <mat-card-content>
           <mat-form-field appearance="outline">
             <mat-label>Votre offre (FCFA)</mat-label>
@@ -106,7 +106,7 @@
       </mat-card>
 
       <!-- Session terminée -->
-      <mat-card *ngIf="secondesRestantes === 0" class="termine-card">
+      <mat-card *ngIf="sessionTerminee" class="termine-card">
         <mat-card-content>
           <mat-icon>timer_off</mat-icon>
           <p>Enchère clôturée</p>
