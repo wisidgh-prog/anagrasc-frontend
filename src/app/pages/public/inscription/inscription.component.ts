@@ -46,8 +46,6 @@ export class InscriptionComponent {
     // controle sur les dates de naissance
 
     // Max = aujourd'hui - 18 ans
-
-
     this.moraleGroup = this.fb.group({
       raison_sociale: ['', Validators.required],
       num_rccm: ['', Validators.required],
