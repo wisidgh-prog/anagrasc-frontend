@@ -60,7 +60,7 @@ export class InscriptionComponent {
     // Formulaire principal (champs communs + groupe actif)
     this.inscriptionForm = this.fb.group({
       type_personne: ['physique', Validators.required],
-      telephone: ['+226', [Validators.required, Validators.pattern(/^\+226\d{8}$/)]],
+      telephone: ['', [Validators.required, Validators.pattern(/^\+226\d{8}$/)]],
       email: ['', [Validators.email]],
       ville: ['', Validators.required],
       type_piece: ['cnib', Validators.required],
@@ -136,10 +136,15 @@ export class InscriptionComponent {
       if (!d) return '';
       return new Date(d).toISOString().slice(0, 10); // YYYY-MM-DD
     };
-    
-    Object.keys(groupeActif).forEach(key => {
-      fd.append(key, groupeActif[key] ?? '');
-    });
+
+    Object.keys(groupeActif).forEach(key => { const valeurChamp = groupeActif[key];
+      // Conversion des dates Angular Material en YYYY-MM-DD
+       if (valeurChamp instanceof Date) {
+         fd.append(key, formatDate(valeurChamp));
+         } else { fd.append(key, valeurChamp ?? '');
+
+          }
+     });
 
     if (this.pieceRectoFichier) {
       fd.append('piece_recto', this.pieceRectoFichier);

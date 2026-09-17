@@ -21,6 +21,16 @@ export class BiensComponent implements OnInit {
   bienForm: FormGroup;
   photosFichiers: File[] = [];
   filtreStatut = '';
+  horairesDisponibles = [
+  'Lun-Ven : 08h - 12h',
+  'Lun-Ven : 14h - 17h',
+  'Lun-Ven : 08h - 17h',
+  'Lun-Sam : 08h - 12h',
+  'Lun-Sam : 14h - 18h',
+  'Lun-Sam : 08h - 18h',
+  'Tous les jours : 08h - 17h',
+  'Sur rendez-vous uniquement'
+];
 
   constructor(
     private api: ApiService,

@@ -116,8 +116,9 @@ export class LogsComponent implements OnInit {
     next: (blob) => {
       const url  = URL.createObjectURL(blob);
       const lien = document.createElement('a');
+      const dateDuJour = new Date().toISOString().slice(0, 10); // format YYYY-MM-DD
       lien.href     = url;
-      lien.download = 'logs_anagrasc.pdf';
+      lien.download = `logs_${dateDuJour}.pdf`;
       lien.click();
       URL.revokeObjectURL(url);
     },

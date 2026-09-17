@@ -22,10 +22,10 @@
 
     <mat-card-content>
       <form [formGroup]="inscriptionForm">
-        <mat-stepper #stepper linear labelPosition="bottom">
+        <mat-stepper #stepper labelPosition="bottom">
 
           <!-- ÉTAPE 1 : Type de compte -->
-          <mat-step label="Type de compte" >
+          <mat-step label="Type de compte" [editable]="false">
             <div class="step-content">
               <h4 class="step-title">Quel type de compte ?</h4>
               <div class="type-grid">
@@ -51,7 +51,7 @@
           </mat-step>
 
          <!-- ÉTAPE 2 : Informations -->
-<mat-step label="Informations">
+<mat-step label="Informations" [editable]="false">
   <div class="step-content">
 
     <!-- Personne physique -->
@@ -74,7 +74,7 @@
         <!-- Date de naissance -->
        <div class="form-row">
         <mat-form-field appearance="outline">
-          <mat-label>Date de naissance *</mat-label>
+          <mat-label>Date de naissance </mat-label>
           <input matInput [matDatepicker]="pickerNaissance"
                 formControlName="date_naissance"
                 [max]="dateMaxNaissance"
@@ -86,7 +86,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <!-- Lieu de naissance -->
-          <mat-label>Lieu de naissance *</mat-label>
+          <mat-label>Lieu de naissance </mat-label>
           <input matInput formControlName="lieu_naissance" placeholder="Ouagadougou">
           <mat-error *ngIf="physiqueGroup.get('lieu_naissance')?.hasError('required')">Lieu requis</mat-error>
         </mat-form-field>
@@ -95,6 +95,7 @@
     </ng-container>
 
     <!-- Personne morale -->
+
     <ng-container *ngIf="inscriptionForm.get('type_personne')?.value === 'morale'">
       <div [formGroup]="moraleGroup">
         <!-- Raison sociale -->
@@ -135,7 +136,7 @@
         <div class="form-row">
   <mat-form-field appearance="outline">
     <!-- Date de naissance -->
-    <mat-label>Date de naissance *</mat-label>
+    <mat-label>Date de naissance </mat-label>
     <input matInput [matDatepicker]="pickerRepNaissance"
            formControlName="representant_legal_date_naissance"
            [max]="dateMaxNaissance"
@@ -147,7 +148,7 @@
   </mat-form-field>
   <mat-form-field appearance="outline">
     <!-- Lieu de naissance -->
-    <mat-label>Lieu de naissance *</mat-label>
+    <mat-label>Lieu de naissance </mat-label>
     <input matInput formControlName="representant_legal_lieu_naissance">
     <mat-error *ngIf="moraleGroup.get('representant_legal_lieu_naissance')?.hasError('required')">Lieu requis</mat-error>
   </mat-form-field>

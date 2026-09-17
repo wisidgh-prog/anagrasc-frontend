@@ -13,14 +13,14 @@
     <div class="col-md-6">
       <mat-card class="photo-card">
         <img mat-card-image *ngIf="bien.photos?.length"
-             [src]="'http://localhost:8000/storage/' + bien.photos[photoActive]?.url"
+             [src]="storageUrl + bien.photos[photoActive]?.url"
              [alt]="bien.titre">
         <div *ngIf="!bien.photos?.length" class="no-photo">
           <mat-icon>image</mat-icon>
         </div>
         <div *ngIf="bien.photos?.length > 1" class="miniatures">
           <img *ngFor="let ph of bien.photos; let i = index"
-               [src]="'http://localhost:8000/storage/' + ph.url"
+               [src]="storageUrl + ph.url"
                (click)="setPhoto(i)"
                [class.active]="i === photoActive">
         </div>

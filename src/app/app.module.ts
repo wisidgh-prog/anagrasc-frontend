@@ -5,8 +5,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr);
+
+
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE,MatNativeDateModule } from '@angular/material/core';
 
 import { AppRoutingModule }  from './app-routing.module';
 import { AppComponent }      from './app.component';
@@ -81,11 +88,15 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
      FormsModule,
      ReactiveFormsModule,
      MaterialModule,
+     MatNativeDateModule,
    ],
-   providers: [{
-     provide : HTTP_INTERCEPTORS,
-     useClass: AuthInterceptor,
-     multi   : true,
+   providers: [
+     { provide: LOCALE_ID, useValue: 'fr-FR' },
+     { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
+     {
+       provide : HTTP_INTERCEPTORS,
+       useClass: AuthInterceptor,
+       multi   : true,
    }],
    bootstrap: [AppComponent],
 })

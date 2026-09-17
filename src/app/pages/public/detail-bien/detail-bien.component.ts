@@ -5,6 +5,7 @@ import { ApiService } from '../../../core/services/api.service';
 import { MatIconModule } from '@angular/material/icon';      // si utilisé dans le template
 import { MatCardModule } from '@angular/material/card';      // etc.
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-detail-bien',
@@ -24,6 +25,7 @@ export class DetailBienComponent implements OnInit {
   session: any = null;          // session associée (à venir ou en cours)
   photoActive = 0;              // index de la photo affichée
   chargement = true;
+  storageUrl = environment.storageUrl;
 
   constructor(
     private route: ActivatedRoute,

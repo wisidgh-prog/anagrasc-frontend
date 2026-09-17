@@ -1,8 +1,68 @@
-.page-container { max-width:1300px; margin:0 auto; padding:24px 16px; }
-.form-card { margin-bottom:24px; border-radius:var(--radius)!important; }
-.table-card { border-radius:var(--radius)!important; }
-.p-0 { padding:0!important; }
-.w-full { width:100%; }
-.fw-semibold { font-weight:600; }
-.center-spinner { display:flex; justify-content:center; padding:40px; }
-.empty { text-align:center; padding:30px; color:var(--text-muted); }
+.page-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+/* En-tête avec titre à gauche et bouton à droite */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .page-title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary);
+  }
+}
+
+/* Grille de formulaire personnalisée (remplace Bootstrap) */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 16px;
+}
+
+.form-col-3  { grid-column: span 3; }
+.form-col-4  { grid-column: span 4; }
+.form-col-6  { grid-column: span 6; }
+.form-col-12 { grid-column: span 12; }
+
+@media (max-width: 768px) {
+  .form-col-3,
+  .form-col-4,
+  .form-col-6 {
+    grid-column: span 12;
+  }
+}
+
+/* Cartes */
+.form-card {
+  margin-bottom: 24px;
+  border-radius: var(--radius) !important;
+}
+
+.table-card {
+  border-radius: var(--radius) !important;
+  margin-top: 16px;
+}
+
+.p-0 { padding: 0 !important; }
+.w-full { width: 100%; }
+.fw-semibold { font-weight: 600; }
+.muted { color: var(--text-muted); font-size: 13px; }
+
+.center-spinner {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.empty {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-muted);
+}

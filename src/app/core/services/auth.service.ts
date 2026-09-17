@@ -24,8 +24,8 @@ export class AuthService {
   get estConnecte(): boolean { return !!localStorage.getItem('anagrasc_token'); }
   get role(): string { return this.currentUser?.role ?? ''; }
 
-  login(telephone: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { telephone, password }).pipe(
+  login(identifiant: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, { identifiant, password }).pipe(
       tap((res: any) => {
         localStorage.setItem('anagrasc_token', res.token);
         localStorage.setItem('anagrasc_user', JSON.stringify(res.user));

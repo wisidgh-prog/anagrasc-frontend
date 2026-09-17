@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-accueil',
@@ -10,6 +11,7 @@ export class AccueilComponent implements OnInit {
   sessionsEnCours: any[] = [];
   sessionsAVenir: any[] = [];
   chargement = true;
+  storageUrl = environment.storageUrl;
 
   constructor(private api: ApiService) {}
 

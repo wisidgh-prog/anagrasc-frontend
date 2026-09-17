@@ -49,7 +49,7 @@
     <div class="biens-grid">
       <mat-card *ngFor="let bien of sessionsEnCours" class="bien-card">
         <div class="bien-img-wrapper">
-          <img *ngIf="bien.photos?.length" [src]="'http://localhost:8000/storage/' + bien.photos[0].url" [alt]="bien.titre">
+          <img *ngIf="bien.photos?.length" [src]="storageUrl + bien.photos[0].url" [alt]="bien.titre">
           <div *ngIf="!bien.photos?.length" class="no-photo"><mat-icon>image</mat-icon></div>
           <span class="ana-badge ana-badge--live status-badge">EN COURS</span>
         </div>

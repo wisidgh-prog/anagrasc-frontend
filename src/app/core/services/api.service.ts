@@ -83,6 +83,7 @@ export class ApiService {
 // ── ADMIN CONFIGURATIONS ───────────────────────────────────────
   getLogs(f: any = {}): Observable<any>              { return this.http.get(`${this.url}/logs`, { params: this.toParams(f) }); }
   getConfigurations(): Observable<any>               { return this.http.get(`${this.url}/configurations`); }
+  getConfigurationsPubliques(): Observable<any>      { return this.http.get(`${this.url}/configurations-publiques`); }
   modifierConfiguration(id: number, valeur: string): Observable<any> { return this.http.put(`${this.url}/configurations/${id}`, { valeur }); }
   getDashboardAdmin(): Observable<any>               { return this.http.get(`${this.url}/admin/dashboard`); }
   getPermissions(): Observable<any>                 { return this.http.get(`${this.url}/permissions`); }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-catalogue',
@@ -11,6 +12,7 @@ export class CatalogueComponent implements OnInit {
   categories: any[] = [];
   chargement        = true;
   filtres = { search: '', categorie_id: '', statut: '' };
+  storageUrl = environment.storageUrl;
 
   constructor(private api: ApiService) {}
 

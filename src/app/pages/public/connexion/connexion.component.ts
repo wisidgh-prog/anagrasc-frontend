@@ -21,7 +21,7 @@ export class ConnexionComponent {
     private snackbar: MatSnackBar
   ) {
     this.connexionForm = this.fb.group({
-      telephone: ['', [Validators.required, Validators.minLength(8)]],
+      identifiant: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -33,7 +33,7 @@ export class ConnexionComponent {
     }
     this.chargement = true;
     this.auth.login(
-      this.connexionForm.value.telephone,
+      this.connexionForm.value.identifiant,
       this.connexionForm.value.password
     ).subscribe({
       next: (res) => {

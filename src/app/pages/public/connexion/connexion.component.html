@@ -6,18 +6,18 @@
       <h2>Connexion</h2>
       <p>Plateforme officielle ANAGRASC</p>
     </div>
-<!-- telephone -->
+<!-- identifiant : téléphone ou email -->
     <form [formGroup]="connexionForm" (ngSubmit)="seConnecter()">
       <mat-card-content>
         <mat-form-field appearance="outline">
           <mat-label>Téléphone ou email</mat-label>
-          <input matInput formControlName="telephone" placeholder="+226 XX XX XX XX">
+          <input matInput formControlName="identifiant" placeholder="+226 XX XX XX XX ou email@exemple.com">
           <mat-icon matPrefix>phone</mat-icon>
-          <mat-error *ngIf="connexionForm.get('telephone')?.hasError('required')">
-            Le téléphone est obligatoire
+          <mat-error *ngIf="connexionForm.get('identifiant')?.hasError('required')">
+            Le téléphone ou l'email est obligatoire
           </mat-error>
-          <mat-error *ngIf="connexionForm.get('telephone')?.hasError('minlength')">
-            Minimum 8 caractères
+          <mat-error *ngIf="connexionForm.get('identifiant')?.hasError('minlength')">
+            Minimum 3 caractères
           </mat-error>
         </mat-form-field>
 <!-- mot de passe -->

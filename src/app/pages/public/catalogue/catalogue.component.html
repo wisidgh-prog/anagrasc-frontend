@@ -76,7 +76,7 @@
           <!-- Photo -->
           <img mat-card-image
                *ngIf="b.photos?.length"
-               [src]="'http://localhost:8000/storage/' + b.photos[0].url"
+               [src]="storageUrl + b.photos[0].url"
                [alt]="b.titre">
           <div *ngIf="!b.photos?.length" class="no-photo">
             <mat-icon>image</mat-icon>

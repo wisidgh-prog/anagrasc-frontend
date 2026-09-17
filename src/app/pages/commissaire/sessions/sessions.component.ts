@@ -64,6 +64,9 @@ export class SessionsComponent implements OnInit {
   modeFormulaire: 'creation' | null = null;
   sessionForm: FormGroup;
 
+  // Valeur par défaut de la surenchère minimum (config globale `min_surenchere`)
+  surenchereDefaut = 1000;
+
   constructor(
     private api: ApiService,
     private auth: AuthService,
@@ -79,7 +82,7 @@ export class SessionsComponent implements OnInit {
         date_fin_date:          [null, Validators.required],
         heure_fin:              ['', Validators.required],
         mise_a_prix_effective:  ['', [Validators.required, Validators.min(0)]],
-        montant_min_surenchere: [1000, [Validators.required, Validators.min(1)]],
+        montant_min_surenchere: [this.surenchereDefaut, [Validators.required, Validators.min(1)]],
         prix_reserve:           ['']
       },
       {
@@ -98,6 +101,21 @@ export class SessionsComponent implements OnInit {
     });
     this.api.getSuperviseurs().subscribe({
       next: (res: any) => this.superviseurs = res.data ?? []
+    });
+    this.chargerConfiguration();
+  }
+
+  // Charge la surenchère minimum globale pour pré-remplir le formulaire de création
+  chargerConfiguration(): void {
+    this.api.getConfigurationsPubliques().subscribe({
+      next: (res: any) => {
+        const cfg = res?.data ?? [];
+        const min = cfg.find((c: any) => c.cle === 'min_surenchere');
+        if (min && Number(min.valeur) > 0) {
+          this.surenchereDefaut = Number(min.valeur);
+          this.sessionForm.controls['montant_min_surenchere'].setValue(this.surenchereDefaut);
+        }
+      }
     });
   }
 
@@ -118,7 +136,7 @@ export class SessionsComponent implements OnInit {
       bien_id: '', superviseur_id: '',
       date_debut_date: null, heure_debut: '',
       date_fin_date: null, heure_fin: '',
-      mise_a_prix_effective: '', montant_min_surenchere: 1000, prix_reserve: ''
+      mise_a_prix_effective: '', montant_min_surenchere: this.surenchereDefaut, prix_reserve: ''
     });
   }
 

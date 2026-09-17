@@ -1,8 +1,8 @@
 <div class="page-container">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="fw-bold mb-0">Gestion des sessions</h4>
+  <div class="page-header">
+    <h4 class="page-title">Gestion des sessions</h4>
     <button mat-raised-button class="ana-btn-primary" (click)="ouvrirCreation()">
-      + Nouvelle session
+      <mat-icon>add</mat-icon> Nouvelle session
     </button>
   </div>
 
@@ -16,9 +16,9 @@
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="sessionForm" (ngSubmit)="creerSession()">
-        <div class="row g-3">
+        <div class="form-grid">
           <!-- bien -->
-          <div class="col-md-6">
+          <div class="form-col-6">
             <mat-form-field appearance="outline">
               <mat-label>Bien valide </mat-label>
               <mat-select formControlName="bien_id">
@@ -29,7 +29,7 @@
             </mat-form-field>
           </div>
           <!-- Superviseur -->
-          <div class="col-md-6">
+          <div class="form-col-6">
             <mat-form-field appearance="outline">
               <mat-label>Superviseur</mat-label>
               <mat-select formControlName="superviseur_id">
@@ -39,9 +39,9 @@
             </mat-form-field>
           </div>
           <!-- Date début -->
-<div class="col-md-3">
+<div class="form-col-3">
   <mat-form-field appearance="outline">
-    <mat-label>Date de début *</mat-label>
+    <mat-label>Date de début </mat-label>
     <input matInput [matDatepicker]="pickerDebutDate"
            formControlName="date_debut_date"
            [min]="aujourdhui"
@@ -53,9 +53,9 @@
   </mat-form-field>
 </div>
 
-<div class="col-md-3">
+<div class="form-col-3">
   <mat-form-field appearance="outline">
-    <mat-label>Heure de début *</mat-label>
+    <mat-label>Heure de début </mat-label>
     <input matInput type="time" formControlName="heure_debut"
            placeholder="HH:MM">
     <mat-error *ngIf="sessionForm.get('heure_debut')?.hasError('required')">Heure obligatoire</mat-error>
@@ -63,9 +63,9 @@
 </div>
 
 <!-- Date fin -->
-<div class="col-md-3">
+<div class="form-col-3">
   <mat-form-field appearance="outline">
-    <mat-label>Date de fin *</mat-label>
+    <mat-label>Date de fin </mat-label>
     <input matInput [matDatepicker]="pickerFinDate"
            formControlName="date_fin_date"
            [min]="sessionForm.get('date_debut_date')?.value || aujourdhui"
@@ -77,9 +77,9 @@
   </mat-form-field>
 </div>
 
-<div class="col-md-3">
+<div class="form-col-3">
   <mat-form-field appearance="outline">
-    <mat-label>Heure de fin *</mat-label>
+    <mat-label>Heure de fin </mat-label>
     <input matInput type="time" formControlName="heure_fin"
            placeholder="HH:MM">
     <mat-error *ngIf="sessionForm.get('heure_fin')?.hasError('required')">Heure obligatoire</mat-error>
@@ -87,27 +87,27 @@
 </div>
 
 <!-- Erreur globale dates -->
-<div class="col-12" *ngIf="sessionForm.hasError('dateFinInvalide')">
+<div class="form-col-12" *ngIf="sessionForm.hasError('dateFinInvalide')">
   <mat-error>La date/heure de fin doit être après la date/heure de début.</mat-error>
 </div>
           <!-- Mise à prix effective -->
-          <div class="col-md-4">
+          <div class="form-col-4">
             <mat-form-field appearance="outline">
-              <mat-label>Mise à prix effective (FCFA) *</mat-label>
+              <mat-label>Mise à prix effective (FCFA) </mat-label>
               <input matInput type="number" formControlName="mise_a_prix_effective">
               <mat-error *ngIf="sessionForm.get('mise_a_prix_effective')?.hasError('required')">Prix requis</mat-error>
               <mat-error *ngIf="sessionForm.get('mise_a_prix_effective')?.hasError('min')">Doit être ≥ 0</mat-error>
             </mat-form-field>
           </div>
-          <div class="col-md-4">
+          <div class="form-col-4">
             <mat-form-field appearance="outline">
-              <mat-label>Surenchère minimum (FCFA) *</mat-label>
+              <mat-label>Surenchère minimum (FCFA) </mat-label>
               <input matInput type="number" formControlName="montant_min_surenchere">
               <mat-error *ngIf="sessionForm.get('montant_min_surenchere')?.hasError('required')">Valeur requise</mat-error>
               <mat-error *ngIf="sessionForm.get('montant_min_surenchere')?.hasError('min')">Doit être ≥ 1</mat-error>
             </mat-form-field>
           </div>
-          <div class="col-md-4">
+          <div class="form-col-4">
             <mat-form-field appearance="outline">
               <mat-label>Prix de réserve (FCFA) <small class="text-muted">(privé)</small></mat-label>
               <input matInput type="number" formControlName="prix_reserve" placeholder="Optionnel">
@@ -162,7 +162,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let s">
-            <a *ngIf="s.statut==='en_cours' || s.statut==='interrompue'"
+            <a *ngIf="s.statut==='terminee' || s.statut==='interrompue'"
                mat-icon-button color="primary" [routerLink]="['/encheres', s.id, 'live']" matTooltip="Superviser">
               <mat-icon>visibility</mat-icon>
             </a>
